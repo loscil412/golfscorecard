@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style_0.css">
     <title>Golf Score Card</title>
 </head>
 <body>
@@ -14,18 +15,27 @@
         <li>MVP: Card calculates under/over par based on course</li>
         <li>NTH: Short game handicap tracker</li>
     </ul>
-
-    <h2>Select a course from the drop down menu:</h2>
-    <select id="menu">
-        <option disabled selected value> -- choose a course -- </option>
-        <option value="0">Edgewood Country Club</option>
-        <option value="1">The Bob</option>
-        <option value="2">Augusta National</option>
-    </select>
+    <div>
+        <h2>Select a course from the drop down menu:</h2>
+        <select id="menu">
+            <option disabled selected value> -- choose a course -- </option>
+            <option value="0">Edgewood Country Club</option>
+            <option value="1">The Bob</option>
+            <option value="2">Augusta National</option>
+        </select>
+    
+    </div>
     <script src="js/courses.js"></script>
 
 
     
-    <h3 id="courseSelection">Course</h3>
+    <h3 id="courseSelection"> </h3>
+
+    <div id="table">
+
+    </div>
+
+
+
 </body>
 </html>

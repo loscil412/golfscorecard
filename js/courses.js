@@ -20,6 +20,19 @@ function courses(){
     let selectedCourse = COURSE_LIST[(document.querySelector('select').value) * 1]
     document.getElementById("courseSelection").innerHTML = selectedCourse.name
     document.getElementById("courseName").innerHTML = "Golf Score Card: " + selectedCourse.name
+    if (document.getElementById("courseNameCard") != null) {
+        document.getElementById("courseNameCard").innerHTML = selectedCourse.name;
+    }
+
+    let scorecardTable = `<table><thead><tr><th colspan=\"19\">${selectedCourse.name}</th></tr></thead>`
+
+    scorecardTable += "<tbody><tr>"
+    for (let i = 0; i < 19; i++){
+        scorecardTable += `<td>${i}</td>`
+    }
+    scorecardTable += "</tr></tbody></table>"
+
+    document.getElementById("table").innerHTML = scorecardTable
 }
 
     
