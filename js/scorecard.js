@@ -1,5 +1,6 @@
 let selectedCourse;
 let menu = document.getElementById("menu")
+addCoursesToMenu();
 menu.addEventListener("change", drawScoreCard)
 
 function getCourse(){
@@ -32,6 +33,14 @@ function drawScoreCard(){
 
     document.getElementById("table").innerHTML = scorecardTable
 
+}
+
+function addCoursesToMenu(){
+    let menuList = `<option disabled selected value> -- choose a course -- </option>`
+    for (let i = 0; i < COURSE_LIST.length; i++){
+        menuList += `<option value=${i}>${COURSE_LIST[i].name}</option>`
+    }
+    menu.innerHTML = menuList;
 }
 
     
