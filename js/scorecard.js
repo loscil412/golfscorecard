@@ -7,7 +7,7 @@ let userScores = []
 function getCourse(){
     selectedCourse = COURSE_LIST[(document.querySelector('select').value) * 1]
     document.getElementById("courseSelection").innerHTML = selectedCourse.name
-    document.getElementById("courseName").innerText = "Golf Score Card: " + selectedCourse.name
+    document.getElementById("dynamicCourseName").innerText = ": " + selectedCourse.name
     if (document.getElementById("courseNameCard") != null) {
         document.getElementById("courseNameCard").innerHTML = selectedCourse.name;
     }

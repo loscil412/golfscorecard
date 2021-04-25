@@ -1,8 +1,16 @@
-table, td {
-    border: 1px solid #333
+:root {
+    --green: rgba(14, 90, 45, 0.945);
+}
+
+
+table, td, th {
+    border: 1px solid var(--green);
+    border-radius: 8px;
 }
 
 thead, tfoot {
-    background-color: #333;
+    background-color: var(--green);
     color: #fff;
+    border-radius: 8px;
+
 }
