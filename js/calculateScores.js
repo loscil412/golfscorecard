@@ -28,9 +28,8 @@ function captureAndCalculateStrokes() {
             scoreToCapture = boxWithScore.value;
             /**
              * check if the box already has a score
-             *  yes? is the score now entered different from the stored score?
-             *      yes? update the score at the same location in the scoreTracking obj
-             *      no? do nothing
+             *  no? try to add score
+             *  yes? do nothing
              */
             if (!isStrokeRecorded(scoreToCapture)) {
                 addStroke(scoreToCapture);
@@ -39,13 +38,22 @@ function captureAndCalculateStrokes() {
         });    
     });
 
-
+    // TODO: do not let the scoreCard keep non-numeric strings visible
+    
+    /**
+     * Is the received score different from the already stored score?
+     * @param {*} existingScore 
+     * @returns boolean
+     */
     function isStrokeRecorded(existingScore){
         if (userStrokesArr[indexOfBoxWithScore] != existingScore) { return false; }
         else return true;
     }
 
-    // need to sanitize the input and check for empty strings
+    /**
+     * Sanitize the input with empty string check  -- (empty strings are stored as '0' in userStrokeArray) 
+     * @param {*} score 
+     */
     function addStroke(score){
         if (score == "") {
             userStrokesArr[indexOfBoxWithScore] = 0;
