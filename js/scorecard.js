@@ -21,7 +21,7 @@ function drawScoreCard(){
     let scorecardTable = `<table><thead><tr><th colspan=${colspanLength}>${SELECTED_COURSE.name}</th></tr></thead>`;
     scorecardTable += "<tbody><tr>"
     for (let i = 0; i < NUMBER_OF_HOLES; i++){
-        scorecardTable += `<td>${i + 1}</td>`; // hole number
+        scorecardTable += `<td id="scrCrdHlNbr">${i + 1}</td>`; // hole number
     }
     scorecardTable += "<td>Total</td></tr><tr>"
     let totalCoursePar = 0;
