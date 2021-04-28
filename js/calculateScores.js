@@ -40,6 +40,18 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
             // debug("FOCUS-OUT event: ")
         });    
     });
+
+    /**
+     * reset scores on click of a button
+     */
+    document.getElementById("sr").addEventListener("click", function() {
+        for (let i = 0; i < userStrokesArr.length; i++){
+            userStrokesArr[i] = 0;
+            rowOfScores[i].style.background = ''; 
+            rowOfScores[i].value = '';
+        }
+        sumScores();
+    });
    
     /**
      * Is the received score different from the already stored score?

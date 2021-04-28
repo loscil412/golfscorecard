@@ -19,3 +19,12 @@ thead, tfoot {
     border-radius: 8px;
 
 }
+
+.button {
+    color: var(--green);
+    background-color: var(--lightYellow);
+    border-color: rgba(14, 90, 44, 0.356);
+    width: fit-content;
+    border-radius: 8px;
+    margin: 10px;
+}

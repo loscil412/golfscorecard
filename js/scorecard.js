@@ -39,6 +39,7 @@ function drawScoreCard(){
 
     // now the DOM is aware of the scorecard and we are ready to capture user input
     document.getElementById("table").innerHTML = scorecardTable;
+    drawResetButton();
     captureAndCalculateStrokes(totalCoursePar);
 }
 
@@ -48,6 +49,11 @@ function addCoursesToMenu(){
         menuList += `<option value=${i}>${COURSE_LIST[i].name}</option>`
     }
     menu.innerHTML = menuList;
+}
+
+function drawResetButton(){
+    document.getElementById("inputRow").innerHTML = `<button name="scoreReset" id="sr" class="button">Reset Strokes</button>`;
+
 }
 
     
