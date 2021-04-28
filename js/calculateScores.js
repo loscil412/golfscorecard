@@ -1,5 +1,6 @@
 
-function captureAndCalculateStrokes() {
+function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
+    let coursePar = TOTAL_COURSE_PAR;
     const regex = /^[\d]+$/;
     let rowOfScores = document.querySelectorAll("input[id^='score-']"); // a regex like selector
     let scoreToCapture;
@@ -30,7 +31,8 @@ function captureAndCalculateStrokes() {
     */
     rowOfScores.forEach( (element) => {
         element.addEventListener('focusout', (event) => {
-            event.target.style.background = '';
+            // event.target.style.background = '';
+            event.target.style.background = colorizeStrokeToParRelation(userStrokesArr[indexOfBoxWithScore], SELECTED_COURSE.holes[(indexOfBoxWithScore + 1)]);
             scoreToCapture = boxWithScore.value;
             if (!isStrokeRecorded(scoreToCapture)) {
                 addStroke(scoreToCapture, event.target);
@@ -76,13 +78,13 @@ function captureAndCalculateStrokes() {
         if (userStrokes < holePar) { return 'lightgreen'; }
         if (userStrokes == holePar) { return 'cyan'; }
         if (userStrokes > holePar) { return 'red'; }
-
-        
     }
+
     function sumScores(){
         let totUserScore = 0;
         userStrokesArr.forEach(score => totUserScore += score * 1);
         document.getElementById("totUserScore").innerText = totUserScore;
+        document.getElementById("totUserScore").style.backgroundColor = colorizeStrokeToParRelation(totUserScore, coursePar);
     }
 
     function initializeUserStrokeArray(){

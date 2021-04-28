@@ -39,7 +39,7 @@ function drawScoreCard(){
 
     // now the DOM is aware of the scorecard and we are ready to capture user input
     document.getElementById("table").innerHTML = scorecardTable;
-    captureAndCalculateStrokes();
+    captureAndCalculateStrokes(totalCoursePar);
 }
 
 function addCoursesToMenu(){
