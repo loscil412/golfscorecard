@@ -1,7 +1,7 @@
 
 function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
     let coursePar = TOTAL_COURSE_PAR;
-    const regex = /^[\d]+$/;
+    const numericRegex = /^[\d]+$/;
     let rowOfScores = document.querySelectorAll("input[id^='score-']"); // a regex like selector
     let scoreToCapture;
     let boxWithScore;
@@ -18,7 +18,6 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
         element.addEventListener('focusin', (event) => {
             event.target.style.background = 'pink';
             boxWithScore = document.activeElement;
-            
             indexOfBoxWithScore = ((boxWithScore.getAttribute("id")).substring(6) * 1) - 1;
             // debug("FOCUS-IN event: ");
         });    
@@ -31,12 +30,13 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
     */
     rowOfScores.forEach( (element) => {
         element.addEventListener('focusout', (event) => {
-            // event.target.style.background = '';
-            event.target.style.background = colorizeStrokeToParRelation(userStrokesArr[indexOfBoxWithScore], SELECTED_COURSE.holes[(indexOfBoxWithScore + 1)]);
             scoreToCapture = boxWithScore.value;
             if (!isStrokeRecorded(scoreToCapture)) {
                 addStroke(scoreToCapture, event.target);
             }
+            event.target.style.background = colorizeStrokeToParRelation(userStrokesArr[indexOfBoxWithScore], SELECTED_COURSE.holes[(indexOfBoxWithScore + 1)]);
+            sumScores();    
+
             // debug("FOCUS-OUT event: ")
         });    
     });
@@ -61,7 +61,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
         if (score == "") {
             userStrokesArr[indexOfBoxWithScore] = 0;
         } else {
-            if (regex.test(score)) {
+            if (numericRegex.test(score)) {
                 userStrokesArr[indexOfBoxWithScore] = score;
                 console.log(userStrokesArr);
             } else {
@@ -69,8 +69,6 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
                 targetEvent.value = "";            
             }    
         }
-        targetEvent.style.background = colorizeStrokeToParRelation(userStrokesArr[indexOfBoxWithScore], SELECTED_COURSE.holes[(indexOfBoxWithScore + 1)])
-        sumScores();    
     }
 
     function colorizeStrokeToParRelation(userStrokes, holePar){
