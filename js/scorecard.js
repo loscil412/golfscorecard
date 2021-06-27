@@ -45,14 +45,18 @@ function drawScoreCard(){
     }
     scorecardTable += `<td id="totUserScore"></td>`
 
+
+/*
+ * additional rows of data go here
+ * 
+ * puts
+ * GIR calculator
+ * FIR
+ * short game HCP
+ */
+
     scorecardTable += "</tr></tbody></table>";
 
-
-    // additional rows of data go here
-    // puts
-    // GIR calculator
-    // FIR
-    // short Game HCP
     
     // now the DOM is aware of the scorecard and we are ready to capture user input
     document.getElementById("table").innerHTML = scorecardTable;
