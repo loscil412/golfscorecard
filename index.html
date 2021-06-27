@@ -1,15 +1,41 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <h1>Golf Score Card</h1>
-        <ol>
-            <p>MVP: Select a Course</p>
-            <p>MVP: Enter scores</p>
-            <p>MVP: Card calculates under/over par based on course</p>
-            <p>NTH: Short game handicap tracker</p>
-        </ol>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style_0.css">
+    <script src="js/data.js"></script>
 
+    <title>Golf Score Card</title>
+</head>
+<body>
+    <h1 id="courseName">Golf Score Card<span id="dynamicCourseName"></span></h1>
+    <ul>
+        <li><strike>MVP: Select a Course</strike></li>
+        <li><strike>MVP: Enter scores</strike></li>
+        <li><strike>MVP: Card calculates under/over par based on course</strike></li>
+        <li>NTH: Short game handicap tracker</li>
+    </ul>
+    <div>
         <h2>Select a course from the drop down menu:</h2>
-        
-    </head>
+        <select id="menu">
+            <!-- dynamically built within scorecard.js -->
+        </select>
+    
+    </div>
+
+
+    
+    <h3 id="courseSelection"></h3>
+
+    <div id="table"></div>
+    <div id="inputRow"></div>
+    <script src="js/scorecard.js"></script>
+
+    <script src="js/calculateScores.js"></script>
+
+
+
+</body>
 </html>

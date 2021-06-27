@@ -1,0 +1,30 @@
+:root {
+    --green: rgba(14, 90, 45, 0.945);
+    --lightYellow: rgb(255, 255, 188);
+}
+
+
+table, td, th {
+    border: 1px solid var(--green);
+    border-radius: 8px;
+}
+
+#scrCrdHlNbr {
+    background-color: var(--lightYellow);
+}
+
+thead, tfoot {
+    background-color: var(--green);
+    color: #fff;
+    border-radius: 8px;
+
+}
+
+.button {
+    color: var(--green);
+    background-color: var(--lightYellow);
+    border-color: rgba(14, 90, 44, 0.356);
+    width: fit-content;
+    border-radius: 8px;
+    margin: 10px;
+}
