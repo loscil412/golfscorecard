@@ -59,6 +59,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
      * @returns boolean
      */
     function isStrokeRecorded(existingScore){
+        return (userStrokesArr[indexOfBoxWithScore] == existingScore);
         if (userStrokesArr[indexOfBoxWithScore] != existingScore) { return false; }
         else return true;
     }
@@ -104,7 +105,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
         return `rgb(7,55,99)`;
     }
 
-    
+
     function sumScores(){
         let totUserScore = 0;
         userStrokesArr.forEach(score => totUserScore += score * 1);
