@@ -28,3 +28,7 @@ thead, tfoot {
     border-radius: 8px;
     margin: 10px;
 }
+
+#legend {
+    text-align: right;
+}

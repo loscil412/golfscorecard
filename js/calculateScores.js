@@ -87,9 +87,24 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
         if (userStrokes == 0) { return ''; }
         if (userStrokes < holePar) { return 'lightgreen'; }
         if (userStrokes == holePar) { return 'cyan'; }
-        if (userStrokes > holePar) { return 'red'; }
+        // if (userStrokes > holePar) { return 'red'; }
+        if (userStrokes > holePar) { return bogey(userStrokes, holePar); }
     }
 
+    /**
+     * Make a shaded pattern for severity of bogeys.
+     * If background is too dark, make the FORE-GROUND FONT WHITE
+     * @param {*} strokes 
+     * @param {*} par 
+     * @returns 
+     */
+    function bogey(strokes, par){
+        if (strokes - par == 1) { return `rgb(164,194,244)`;} 
+        if (strokes - par == 2) { return `rgb(61,133,198)`;}
+        return `rgb(7,55,99)`;
+    }
+
+    
     function sumScores(){
         let totUserScore = 0;
         userStrokesArr.forEach(score => totUserScore += score * 1);
@@ -112,4 +127,3 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
     }
 
 }
-
