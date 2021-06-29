@@ -27,7 +27,7 @@ function drawScoreCard(){
     for (let i = 0; i < NUMBER_OF_HOLES; i++){
         scorecardTable += `<td id="scrCrdHlNbr">${i + 1}</td>`; // hole number
     }
-    scorecardTable += "<td>Totals</td></tr>"
+    scorecardTable += `<td id="legend">Totals</td></tr>`
 
     // the par score per hole
     let totalCoursePar = 0;
@@ -36,7 +36,7 @@ function drawScoreCard(){
         scorecardTable += `<td>${SELECTED_COURSE.holes[i+1]}</td>`; // hole par
         totalCoursePar += SELECTED_COURSE.holes[i+1];
     }
-    scorecardTable += `<td>${totalCoursePar}</td></tr>`;
+    scorecardTable += `<td id="legend">${totalCoursePar}</td></tr>`;
 
     // strokes played
     scorecardTable += `<tr id="userScores"><td id="legend">Strokes</td>`;
@@ -44,6 +44,13 @@ function drawScoreCard(){
         scorecardTable += `<td><input type="text" id="score-${i + 1}" size="1"></td>`
     }
     scorecardTable += `<td id="totUserScore"></td></tr>`
+
+    // putts needed
+    scorecardTable += `<tr id="nbrOfPutts"><td id="legend">Putts</td>`;
+    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+        scorecardTable += `<td><input type="text" id="putt-${i + 1}" size="1"></td>`
+    }
+    scorecardTable += `<td id="totPutts"></td></tr>`
 
 
 /*

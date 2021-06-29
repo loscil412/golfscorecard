@@ -7,10 +7,7 @@
 table, td, th {
     border: 1px solid var(--green);
     border-radius: 8px;
-}
-
-#scrCrdHlNbr {
-    background-color: var(--lightYellow);
+    text-align: center;
 }
 
 thead, tfoot {
@@ -20,6 +17,19 @@ thead, tfoot {
 
 }
 
+
+#scrCrdHlNbr {
+    width: 4%;
+    background-color: var(--lightYellow);
+    text-align: center;
+}
+
+
+#legend {
+    width: 9%;
+    text-align: right;
+}
+
 .button {
     color: var(--green);
     background-color: var(--lightYellow);
@@ -27,8 +37,4 @@ thead, tfoot {
     width: fit-content;
     border-radius: 8px;
     margin: 10px;
-}
-
-#legend {
-    text-align: right;
 }
