@@ -100,9 +100,9 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
      * @returns 
      */
     function bogey(strokes, par){
-        if (strokes - par == 1) { return `rgb(164,194,244)`;} 
-        if (strokes - par == 2) { return `rgb(61,133,198)`;}
-        return `rgb(7,55,99)`;
+        if (strokes - par == 1) { return `rgb(26,163,255)`;} 
+        if (strokes - par == 2) { return `rgb(0,122,204)`;}
+        return `rgb(0,107,179)`;
     }
 
 
