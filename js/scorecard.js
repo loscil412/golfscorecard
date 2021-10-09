@@ -3,17 +3,9 @@ let NUMBER_OF_HOLES;
 const ADD_COLUMNS = 2; // legends on left, totals on right
 let menu = document.getElementById("menu")
 addCoursesToMenu();
+// on change (or select of course) to menu, we draw the correct score card
 menu.addEventListener("change", drawScoreCard)
 
-
-function getCourse(){
-    SELECTED_COURSE = COURSE_LIST[(document.querySelector('select').value) * 1]
-    document.getElementById("courseSelection").innerHTML = SELECTED_COURSE.name
-    document.getElementById("dynamicCourseName").innerText = ": " + SELECTED_COURSE.name
-    if (document.getElementById("courseNameCard") != null) {
-        document.getElementById("courseNameCard").innerHTML = SELECTED_COURSE.name;
-    }
-}
 
 function drawScoreCard(){
     getCourse();
@@ -52,11 +44,24 @@ function drawScoreCard(){
     }
     scorecardTable += `<td id="totPutts"></td></tr>`
 
+    // shots within 50 yards of green
+    scorecardTable += `tr id="shortGame"><td id="legend">SGS</td>`
+    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+        scorecardTable += `<td><input type="text" id="sgs-${i + 1}" size="1"></td>`
+    }
+    scorecardTable += `<td id="totShortGame"></td></tr>`
 
+    // GIR
+    scorecardTable += `<tr id="gir"><td id="legend">GIR</td>`;
+    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+        scorecardTable += `<td><input type="text" id="gir-${i + 1}" size="1"></td>`
+    }
+    scorecardTable += `<td id="totGir"></td></tr>`
+    
 /*
  * additional rows of data go here
  * 
- * puts
+ * putts
  * GIR calculator
  * FIR
  * short game HCP
@@ -77,6 +82,12 @@ function addCoursesToMenu(){
         menuList += `<option value=${i}>${COURSE_LIST[i].name}</option>`
     }
     menu.innerHTML = menuList;
+}
+
+function getCourse(){
+    SELECTED_COURSE = COURSE_LIST[(document.querySelector('select').value)]
+    document.getElementById("courseSelection").innerHTML = SELECTED_COURSE.name
+    document.getElementById("dynamicCourseName").innerText = ": " + SELECTED_COURSE.name
 }
 
 function drawResetButton(){
