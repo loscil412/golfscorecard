@@ -3,12 +3,19 @@ let NUMBER_OF_HOLES;
 const ADD_COLUMNS = 2; // legends on left, totals on right
 let menu = document.getElementById("menu")
 addCoursesToMenu();
-// on change (or select of course) to menu, we draw the correct score card
-menu.addEventListener("change", drawScoreCard)
 
+// on change (or select of course) to menu, we draw the correct score card
+// menu.addEventListener("change", drawScoreCard)
+menu.addEventListener("change", setCourse)
+
+function setCourse(){
+    SELECTED_COURSE = COURSE_LIST[(document.querySelector('select').value)]
+    document.getElementById("courseSelection").innerHTML = SELECTED_COURSE.name
+    document.getElementById("dynamicCourseName").innerText = ": " + SELECTED_COURSE.name
+    drawScoreCard();
+}
 
 function drawScoreCard(){
-    getCourse();
     NUMBER_OF_HOLES = Object.keys(SELECTED_COURSE.holes).length;
     let nbrOfColumns = NUMBER_OF_HOLES + ADD_COLUMNS;
     // the courseName header
@@ -82,12 +89,6 @@ function addCoursesToMenu(){
         menuList += `<option value=${i}>${COURSE_LIST[i].name}</option>`
     }
     menu.innerHTML = menuList;
-}
-
-function getCourse(){
-    SELECTED_COURSE = COURSE_LIST[(document.querySelector('select').value)]
-    document.getElementById("courseSelection").innerHTML = SELECTED_COURSE.name
-    document.getElementById("dynamicCourseName").innerText = ": " + SELECTED_COURSE.name
 }
 
 function drawResetButton(){
