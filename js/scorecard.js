@@ -1,5 +1,6 @@
 let SELECTED_COURSE;
 let NUMBER_OF_HOLES;
+let scorecardTable, nbrOfColumns;
 const ADD_COLUMNS = 2; // legends on left, totals on right
 let menu = document.getElementById("menu")
 addCoursesToMenu();
@@ -17,9 +18,11 @@ function setCourse(){
 
 function drawScoreCard(){
     NUMBER_OF_HOLES = Object.keys(SELECTED_COURSE.holes).length;
-    let nbrOfColumns = NUMBER_OF_HOLES + ADD_COLUMNS;
+    // let nbrOfColumns = NUMBER_OF_HOLES + ADD_COLUMNS;
+    nbrOfColumns = NUMBER_OF_HOLES + ADD_COLUMNS;
     // the courseName header
-    let scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
+    // let scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
+    scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
     
     // the hole numbers
     scorecardTable += `<tbody><tr id="holeNumbers"><td id="legend">Hole</td>`;
@@ -37,34 +40,13 @@ function drawScoreCard(){
     }
     scorecardTable += `<td id="legend">${totalCoursePar}</td></tr>`;
 
-    // strokes played
-    scorecardTable += `<tr id="userScores"><td id="legend">Strokes</td>`;
-    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
-        scorecardTable += `<td><input type="text" id="score-${i + 1}" size="1"></td>`
-    }
-    scorecardTable += `<td id="totUserScore"></td></tr>`
+    // add data rows with reuseable function
+    addRowToScoreCardTable("UserScore", "Strokes", "score")
+    addRowToScoreCardTable("nbrOfPutts", "Putts", "putt")
+    addRowToScoreCardTable("shortGame", "SGS", "sgs")
+    addRowToScoreCardTable("gir", "GIR", "gir")
+   
 
-    // putts needed
-    scorecardTable += `<tr id="nbrOfPutts"><td id="legend">Putts</td>`;
-    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
-        scorecardTable += `<td><input type="text" id="putt-${i + 1}" size="1"></td>`
-    }
-    scorecardTable += `<td id="totPutts"></td></tr>`
-
-    // shots within 50 yards of green
-    scorecardTable += `tr id="shortGame"><td id="legend">SGS</td>`
-    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
-        scorecardTable += `<td><input type="text" id="sgs-${i + 1}" size="1"></td>`
-    }
-    scorecardTable += `<td id="totShortGame"></td></tr>`
-
-    // GIR
-    scorecardTable += `<tr id="gir"><td id="legend">GIR</td>`;
-    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
-        scorecardTable += `<td><input type="text" id="gir-${i + 1}" size="1"></td>`
-    }
-    scorecardTable += `<td id="totGir"></td></tr>`
-    
 /*
  * additional rows of data go here
  * 
@@ -83,6 +65,21 @@ function drawScoreCard(){
     captureAndCalculateStrokes(totalCoursePar);
 }
 
+/**
+ * 
+ * @param {NewType} idName "ShortGame"
+ * @param {*} legend "SGS"
+ * @param {*} idPrepend "sgs"
+ */
+function addRowToScoreCardTable(idName, legend, idPrepend){
+    scorecardTable += `<tr id="${idName}"><td id="legend">${legend}</td>`
+
+    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+        scorecardTable += `<td><input type="text" id="${idPrepend}-${i + 1}" size="1"></td>`
+    }
+    scorecardTable += `<td id="tot${idName}"></td></tr>`
+}
+
 function addCoursesToMenu(){
     let menuList = `<option disabled selected value> -- choose a course -- </option>`
     for (let i = 0; i < COURSE_LIST.length; i++){
@@ -95,6 +92,3 @@ function drawResetButton(){
     document.getElementById("inputRow").innerHTML = `<button name="scoreReset" id="sr" class="button">Reset Strokes</button>`;
 
 }
-
-    
-
