@@ -1,12 +1,9 @@
-let SELECTED_COURSE;
-let NUMBER_OF_HOLES;
-let scorecardTable, nbrOfColumns;
+let SELECTED_COURSE, NUMBER_OF_HOLES, scorecardTable, nbrOfColumns;
 const ADD_COLUMNS = 2; // legends on left, totals on right
 let menu = document.getElementById("menu")
 addCoursesToMenu();
 
 // on change (or select of course) to menu, we draw the correct score card
-// menu.addEventListener("change", drawScoreCard)
 menu.addEventListener("change", setCourse)
 
 function setCourse(){
@@ -44,18 +41,13 @@ function drawScoreCard(){
     addRowToScoreCardTable("shortGame", "SGS", "sgs")
     addRowToScoreCardTable("gir", "GIR", "gir")
    
-
 /*
  * additional rows of data go here
- * 
- * putts
  * GIR calculator
  * FIR
  * short game HCP
  */
-
     scorecardTable += "</tbody></table>";
-
     
     // now the DOM is aware of the scorecard and we are ready to capture user input
     document.getElementById("table").innerHTML = scorecardTable;
@@ -65,13 +57,12 @@ function drawScoreCard(){
 
 /**
  * 
- * @param {NewType} idName "ShortGame"
- * @param {*} legend "SGS"
- * @param {*} idPrepend "sgs"
+ * @param {String} idName "ShortGame"
+ * @param {String} legend "SGS"
+ * @param {String} idPrepend "sgs"
  */
 function addRowToScoreCardTable(idName, legend, idPrepend){
     scorecardTable += `<tr id="${idName}"><td id="legend">${legend}</td>`
-
     for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
         scorecardTable += `<td><input type="text" id="${idPrepend}-${i + 1}" size="1"></td>`
     }
@@ -88,5 +79,4 @@ function addCoursesToMenu(){
 
 function drawResetButton(){
     document.getElementById("inputRow").innerHTML = `<button name="scoreReset" id="sr" class="button">Reset Strokes</button>`;
-
 }
