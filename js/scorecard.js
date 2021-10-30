@@ -18,10 +18,8 @@ function setCourse(){
 
 function drawScoreCard(){
     NUMBER_OF_HOLES = Object.keys(SELECTED_COURSE.holes).length;
-    // let nbrOfColumns = NUMBER_OF_HOLES + ADD_COLUMNS;
     nbrOfColumns = NUMBER_OF_HOLES + ADD_COLUMNS;
     // the courseName header
-    // let scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
     scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
     
     // the hole numbers
