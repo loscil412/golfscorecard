@@ -60,9 +60,13 @@ function drawScoreCard(){
  * @param {String} idPrepend "sgs"
  */
 function addRowToScoreCardTable(idName, display_legend, idPrepend){
+    let idPrepend_Nbr = '';
     scorecardTable += `<tr id="${idName}"><td id="display-legend">${display_legend}</td>`
     for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
-        scorecardTable += `<td><input type="text" id="${idPrepend}-${i + 1}" size="1"></td>`
+        if (i < 9) { 
+            idPrepend_Nbr = '0' + (i + 1);
+        } else idPrepend_Nbr = i + 1;
+        scorecardTable += `<td><input type="text" id="${idPrepend}-${idPrepend_Nbr}" size="1"></td>`
     }
     scorecardTable += `<td id="tot${idName}"></td></tr>`
 }

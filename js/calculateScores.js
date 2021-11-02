@@ -10,9 +10,66 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     console.log("NUMERIC_REGEX -- ", NUMERIC_REGEX);
 
     let rowOfScores = document.querySelectorAll("input[id^='score-']"); // a regex like selector
+    let rowOfPutts = document.querySelectorAll("input[id^='putt-']"); // a regex like selector
+    let rowOfSgs = document.querySelectorAll("input[id^='sgs-']"); // a regex like selector
+    
     let scoreToCapture;
-    let boxWithScore;
+    let boxWithInput;
     let indexOfBoxWithScore;
+
+    /**
+     * Rather than track multiple array objects
+     * The score card will be one object
+     * ScoreCard : {
+     *  Date:
+     *  Course: 
+     *  CoursePar: 
+     *  StrokeData: [
+     *     {
+     *      HoleNbr : {
+     *          Par: x,
+     *          Strokes: x,
+     *          Putts: x,
+     *          SGSShots: x,
+     *          GIR: function(){
+     *              if (Par == 4 && ((Strokes < 4 && Putts != 0) || (Strokes - Putts < 2.5))) true
+     *              else if (Par == 5 && ((Strokes < 5 && Putts != 0) || (Strokes - Putts < 3.5))) true
+     *              else if ( Par == 3 && ((Strokes < 3 && Putts != 0) || (Strokes == 3 && Putts == 2))) true
+     *              else false
+     *          }
+     *      }, ...
+    *      }
+     *  ],
+     *  GIRs: x,
+     *  TotalStrokes: x,
+     * 
+     * }
+     */
+
+    let scoreCard = {
+        Course: SELECTED_COURSE.name,
+        Date: new Date().getYear(),
+        CoursePar: 0,
+        StrokeData: [],
+        Greens: 0,
+        TotalStrokes: 0,
+        TotalPuts: 0,
+        ShortGameHcp: 0
+    }
+
+    for (let i = 0 ; i < Object.keys(SELECTED_COURSE.holes).length; i++){
+        scoreCard.StrokeData.push(
+            {
+                Par: SELECTED_COURSE.holes[i+1],
+                Strokes: 99,
+                Putts: '',
+                SgsStrokes: '',
+                Gir: false
+            }
+        )
+    }
+
+    console.log(scoreCard);
     let userStrokesArr = [];
     let userPuttsArr = [];
     let userShortGameArr = [];
@@ -24,35 +81,51 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * userStrokesArr is 0 indexed
     */
     rowOfScores.forEach( (element) => {
-        element.addEventListener('focusin', (event) => {
-            event.target.style.background = 'pink';
-            boxWithScore = document.activeElement;
+        makeActive(element);
+        makeInactive(element, 'Strokes');
 
-
-            indexOfBoxWithScore = ((boxWithScore.getAttribute("id")).substring(6) * 1) - 1;
-            // debug("FOCUS-IN event: ");
-        });    
     });
 
+    rowOfPutts.forEach( (element) => {
+        makeActive(element);
+        makeInactive(element, 'Putts');
 
+    });
+
+    rowOfSgs.forEach( (element) => {
+        makeActive(element);
+        makeInactive(element, 'SgsStrokes');
+    });
+
+    function makeActive(element){
+        element.addEventListener('focusin', (event) => {
+            event.target.style.background = 'pink';
+            boxWithInput = document.activeElement;
+            let nbrOfChars = boxWithInput.getAttribute("id").length;
+            let lastTwoChars = nbrOfChars - 2;
+            console.log("boxWithInput length ==> ", nbrOfChars);
+            indexOfBoxWithScore = ((boxWithInput.getAttribute("id")).substring(lastTwoChars)) - 1; // I have the INDEX of the value
+        })
+    }
 
     /**
      * check if the box already has a score
      *  no? try to add score
      *  yes? do nothing
     */
-    rowOfScores.forEach( (element) => {
+    function makeInactive(element, strokeDataElement){
         element.addEventListener('focusout', (event) => {
-            scoreToCapture = boxWithScore.value;
-            if (!isStrokeRecorded(scoreToCapture)) {
-                addStroke(scoreToCapture, event.target);
+            scoreToCapture = boxWithInput.value;
+            if (!isStrokeRecorded(scoreToCapture, strokeDataElement)) {
+                addStroke(scoreToCapture, event.target, strokeDataElement);
             }
-            event.target.style.background = colorizeStrokeToParRelation(userStrokesArr[indexOfBoxWithScore], SELECTED_COURSE.holes[(indexOfBoxWithScore + 1)]);
+            event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore]['Par']);
             sumScores();    
 
             // debug("FOCUS-OUT event: ")
+            console.log(scoreCard)
         });    
-    });
+    }
 
     /**
      * reset scores on click of a button
@@ -71,10 +144,9 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * @param {*} existingScore 
      * @returns boolean
      */
-    function isStrokeRecorded(existingScore){
+    function isStrokeRecorded(existingScore, strokeDataElement){
+        return (scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] == existingScore);
         return (userStrokesArr[indexOfBoxWithScore] == existingScore);
-        if (userStrokesArr[indexOfBoxWithScore] != existingScore) { return false; }
-        else return true;
     }
 
     /**
@@ -83,15 +155,18 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * strings are not stored and reset to "" in visible score card
      * @param {*} score 
      */
-    function addStroke(score, targetEvent){
+    function addStroke(score, targetEvent, strokeDataElement){
+        console.log('------- ', targetEvent)
+        console.log('--score?  ', score)
+
         if (score == "") {
-            userStrokesArr[indexOfBoxWithScore] = 0;
+            scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = 0;
         } else {
             if (NUMERIC_REGEX.test(score)) {
-                userStrokesArr[indexOfBoxWithScore] = score;
-                console.log(userStrokesArr);
+                scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = score;
+                console.log();
             } else {
-                userStrokesArr[indexOfBoxWithScore] = 0;
+                scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = 0;
                 targetEvent.value = "";            
             }    
         }
