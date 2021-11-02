@@ -1,12 +1,21 @@
 
-function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
-    let coursePar = TOTAL_COURSE_PAR;
-    const numericRegex = /^[\d]+$/;
+function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
+
+    console.log("Checking scope ---");
+    console.log("SELECTED_COURSE -- ", SELECTED_COURSE);
+    console.log("NUMBER_OF_HOLES -- ", NUMBER_OF_HOLES);
+    console.log("NUMBER_OF_HOLES -- ", NUMBER_OF_HOLES);
+    console.log("totalCoursePar -- ", totalCoursePar);
+    console.log("TOTAL_COURSE_PAR -- ", TOTAL_COURSE_PAR);
+    console.log("NUMERIC_REGEX -- ", NUMERIC_REGEX);
+
     let rowOfScores = document.querySelectorAll("input[id^='score-']"); // a regex like selector
     let scoreToCapture;
     let boxWithScore;
     let indexOfBoxWithScore;
     let userStrokesArr = [];
+    let userPuttsArr = [];
+    let userShortGameArr = [];
     initializeUserStrokeArray();
 
     /**
@@ -18,10 +27,14 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
         element.addEventListener('focusin', (event) => {
             event.target.style.background = 'pink';
             boxWithScore = document.activeElement;
+
+
             indexOfBoxWithScore = ((boxWithScore.getAttribute("id")).substring(6) * 1) - 1;
             // debug("FOCUS-IN event: ");
         });    
     });
+
+
 
     /**
      * check if the box already has a score
@@ -74,7 +87,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
         if (score == "") {
             userStrokesArr[indexOfBoxWithScore] = 0;
         } else {
-            if (numericRegex.test(score)) {
+            if (NUMERIC_REGEX.test(score)) {
                 userStrokesArr[indexOfBoxWithScore] = score;
                 console.log(userStrokesArr);
             } else {
@@ -110,12 +123,14 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR) {
         let totUserScore = 0;
         userStrokesArr.forEach(score => totUserScore += score * 1);
         document.getElementById("totUserScore").innerText = totUserScore;
-        document.getElementById("totUserScore").style.backgroundColor = colorizeStrokeToParRelation(totUserScore, coursePar);
+        document.getElementById("totUserScore").style.backgroundColor = colorizeStrokeToParRelation(totUserScore, totalCoursePar);
     }
 
     function initializeUserStrokeArray(){
         for (var i = 0; i < NUMBER_OF_HOLES; i++){
             userStrokesArr.push('0');
+            userPuttsArr.push('0');
+            userShortGameArr.push('0');
         }
         console.log("userStrokesArr --> " + userStrokesArr);
     }

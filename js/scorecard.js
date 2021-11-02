@@ -1,5 +1,3 @@
-let SELECTED_COURSE, NUMBER_OF_HOLES, scorecardTable, nbrOfColumns;
-const ADD_COLUMNS = 2; // legends on left, totals on right
 let menu = document.getElementById("menu")
 addCoursesToMenu();
 
@@ -20,20 +18,20 @@ function drawScoreCard(){
     scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
     
     // the hole numbers
-    scorecardTable += `<tbody><tr id="holeNumbers"><td id="legend">Hole</td>`;
+    scorecardTable += `<tbody><tr id="holeNumbers"><td id="display-legend">Hole</td>`;
     for (let i = 0; i < NUMBER_OF_HOLES; i++){
         scorecardTable += `<td id="scrCrdHlNbr">${i + 1}</td>`; // hole number
     }
-    scorecardTable += `<td id="legend">Totals</td></tr>`
+    scorecardTable += `<td id="display-legend">Totals</td></tr>`
 
     // the par score per hole
-    let totalCoursePar = 0;
-    scorecardTable += `<tr id="coursePar"><td id="legend">Par</td>`;
+    // let totalCoursePar = 0;
+    scorecardTable += `<tr id="coursePar"><td id="display-legend">Par</td>`;
     for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
         scorecardTable += `<td>${SELECTED_COURSE.holes[i+1]}</td>`; // hole par
         totalCoursePar += SELECTED_COURSE.holes[i+1];
     }
-    scorecardTable += `<td id="legend">${totalCoursePar}</td></tr>`;
+    scorecardTable += `<td id="display-legend">${totalCoursePar}</td></tr>`;
 
     // add data rows with reuseable function
     addRowToScoreCardTable("UserScore", "Strokes", "score")
@@ -52,17 +50,17 @@ function drawScoreCard(){
     // now the DOM is aware of the scorecard and we are ready to capture user input
     document.getElementById("table").innerHTML = scorecardTable;
     drawResetButton();
-    captureAndCalculateStrokes(totalCoursePar);
+    captureAndCalculateStrokes();
 }
 
 /**
  * 
  * @param {String} idName "ShortGame"
- * @param {String} legend "SGS"
+ * @param {String} display_legend "SGS"
  * @param {String} idPrepend "sgs"
  */
-function addRowToScoreCardTable(idName, legend, idPrepend){
-    scorecardTable += `<tr id="${idName}"><td id="legend">${legend}</td>`
+function addRowToScoreCardTable(idName, display_legend, idPrepend){
+    scorecardTable += `<tr id="${idName}"><td id="display-legend">${display_legend}</td>`
     for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
         scorecardTable += `<td><input type="text" id="${idPrepend}-${i + 1}" size="1"></td>`
     }
