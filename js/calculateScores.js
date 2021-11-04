@@ -1,52 +1,50 @@
+/**
+ * Rather than track multiple array objects
+ * The score card will be one object
+ * ScoreCard : {
+ *  Date:
+ *  Course: 
+ *  CoursePar: 
+ *  StrokeData: [
+ *     {
+ *      HoleNbr : {
+ *          Par: x,
+ *          Strokes: x,
+ *          Putts: x,
+ *          SGSShots: x,
+ *          GIR: function(){
+ *              if (Par == 4 && ((Strokes < 4 && Putts != 0) || (Strokes - Putts < 2.5))) true
+ *              else if (Par == 5 && ((Strokes < 5 && Putts != 0) || (Strokes - Putts < 3.5))) true
+ *              else if ( Par == 3 && ((Strokes < 3 && Putts != 0) || (Strokes == 3 && Putts == 2))) true
+ *              else false
+ *          }
+ *      }, ...
+*      }
+    *  ],
+    *  GIRs: x,
+    *  TotalStrokes: x,
+    * 
+    * }
+    */
 
 function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
 
     console.log("Checking scope ---");
     console.log("SELECTED_COURSE -- ", SELECTED_COURSE);
     console.log("NUMBER_OF_HOLES -- ", NUMBER_OF_HOLES);
-    console.log("NUMBER_OF_HOLES -- ", NUMBER_OF_HOLES);
     console.log("totalCoursePar -- ", totalCoursePar);
     console.log("TOTAL_COURSE_PAR -- ", TOTAL_COURSE_PAR);
-    console.log("NUMERIC_REGEX -- ", NUMERIC_REGEX);
 
-    let rowOfScores = document.querySelectorAll("input[id^='score-']"); // a regex like selector
-    let rowOfPutts = document.querySelectorAll("input[id^='putt-']"); // a regex like selector
-    let rowOfSgs = document.querySelectorAll("input[id^='sgs-']"); // a regex like selector
+    let rowOfScores = document.querySelectorAll("input[id^='score-']"); // a regex like selector, returns an array
+    let rowOfPutts = document.querySelectorAll("input[id^='putt-']"); // a regex like selector, returns an array
+    let rowOfSgs = document.querySelectorAll("input[id^='sgs-']"); // a regex like selector, returns an array
     
     let scoreToCapture;
     let boxWithInput;
     let indexOfBoxWithScore;
     let lengthOfScoreCardStrokeDataArray = Object.keys(SELECTED_COURSE.holes).length;
-
-    /**
-     * Rather than track multiple array objects
-     * The score card will be one object
-     * ScoreCard : {
-     *  Date:
-     *  Course: 
-     *  CoursePar: 
-     *  StrokeData: [
-     *     {
-     *      HoleNbr : {
-     *          Par: x,
-     *          Strokes: x,
-     *          Putts: x,
-     *          SGSShots: x,
-     *          GIR: function(){
-     *              if (Par == 4 && ((Strokes < 4 && Putts != 0) || (Strokes - Putts < 2.5))) true
-     *              else if (Par == 5 && ((Strokes < 5 && Putts != 0) || (Strokes - Putts < 3.5))) true
-     *              else if ( Par == 3 && ((Strokes < 3 && Putts != 0) || (Strokes == 3 && Putts == 2))) true
-     *              else false
-     *          }
-     *      }, ...
-    *      }
-     *  ],
-     *  GIRs: x,
-     *  TotalStrokes: x,
-     * 
-     * }
-     */
-
+    let parPuttsPerCourse = NUMBER_OF_HOLES * 2;
+    
     let scoreCard = {
         Course: SELECTED_COURSE.name,
         Date: new Date().getYear(),
@@ -55,7 +53,8 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         Greens: 0,
         TotalStrokes: 0,
         TotalPuts: 0,
-        ShortGameHcp: 0
+        ShortGameHcp: 0,
+        Create_Time: Date.now()
     }
 
     for (let i = 0 ; i < lengthOfScoreCardStrokeDataArray; i++){
@@ -70,12 +69,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         )
     }
 
-    console.log(scoreCard);
-    let userStrokesArr = [];
-    let userPuttsArr = [];
-    let userShortGameArr = [];
-    initializeUserStrokeArray();
-
+    console.log(scoreCard)
     rowOfScores.forEach( (element) => {
         makeActive(element);
         makeInactive(element, 'Strokes');
@@ -119,11 +113,21 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
             if (!isStrokeRecorded(scoreToCapture, strokeDataElement)) {
                 addStroke(scoreToCapture, event.target, strokeDataElement);
             }
-            event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore]['Par']);
-            sumScores();    
+            switch (strokeDataElement){
+                case 'Strokes':
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore]['Par']);
+                    break;
 
-            // debug("FOCUS-OUT event: ")
-            console.log(scoreCard)
+                case 'Putts':
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], 2);
+                    break;
+                
+                default:
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore]['Par']);
+ 
+            }
+            sumScores();    
+            // console.log(scoreCard)
         });    
     }
 
@@ -153,7 +157,6 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      */
     function isStrokeRecorded(existingScore, strokeDataElement){
         return (scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] == existingScore);
-        return (userStrokesArr[indexOfBoxWithScore] == existingScore);
     }
 
     /**
@@ -163,15 +166,14 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * @param {*} score 
      */
     function addStroke(score, targetEvent, strokeDataElement){
-        console.log('------- ', targetEvent)
-        console.log('--score?  ', score)
+        // console.log('------- ', targetEvent)
+        // console.log('--score?  ', score)
 
         if (score == "") {
             scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = 0;
         } else {
             if (NUMERIC_REGEX.test(score)) {
                 scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = score * 1;
-                console.log();
             } else {
                 scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = 0;
                 targetEvent.value = "";            
@@ -179,12 +181,12 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         }
     }
 
-    function colorizeStrokeToParRelation(userStrokes, holePar){
+    function colorizeStrokeToParRelation(userStrokes, par){
         if (userStrokes == 0) { return ''; }
-        if (userStrokes < holePar) { return 'lightgreen'; }
-        if (userStrokes == holePar) { return 'cyan'; }
-        // if (userStrokes > holePar) { return 'red'; }
-        if (userStrokes > holePar) { return bogey(userStrokes, holePar); }
+        if (userStrokes < par) { return 'lightgreen'; }
+        if (userStrokes == par) { return 'cyan'; }
+        // if (userStrokes > par) { return 'red'; }
+        if (userStrokes > par) { return bogey(userStrokes, par); }
     }
 
     /**
@@ -212,26 +214,9 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         
         function displayTotalScores(){
             document.getElementById("totUserScore").innerText = totUserStrokes;
-            document.getElementById("totUserScore").style.backgroundColor = colorizeStrokeToParRelation(totUserScore, totalCoursePar);
+            document.getElementById("totUserScore").style.background = colorizeStrokeToParRelation(totUserStrokes, totalCoursePar);
             document.getElementById("totnbrOfPutts").innerText = totUserPutts;
-            document.getElementById("totnbrOfPutts").style.backgroundColor = colorizeStrokeToParRelation(totUserScore, totalCoursePar);    
+            document.getElementById("totnbrOfPutts").style.background = colorizeStrokeToParRelation(totUserPutts, parPuttsPerCourse);    
         }
     }
-
-    function initializeUserStrokeArray(){
-        for (var i = 0; i < NUMBER_OF_HOLES; i++){
-            userStrokesArr.push('0');
-            userPuttsArr.push('0');
-            userShortGameArr.push('0');
-        }
-        console.log("userStrokesArr --> " + userStrokesArr);
-    }
-
-    function debug(eventString){
-        console.log(eventString + "userStrokesArr --> " + userStrokesArr);
-        console.log(eventString + "indexOfBoxWithScore --> " + indexOfBoxWithScore);
-        console.log(eventString + "scoreToCapture --> " + scoreToCapture);
-
-    }
-
 }
