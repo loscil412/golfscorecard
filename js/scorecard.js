@@ -12,14 +12,14 @@ function setCourse(){
 }
 
 function drawScoreCard(){
-    NUMBER_OF_HOLES = Object.keys(SELECTED_COURSE.holes).length;
-    nbrOfColumns = NUMBER_OF_HOLES + ADD_COLUMNS;
+    nbrOfCourseHoles = Object.keys(SELECTED_COURSE.holes).length;
+    nbrOfColumns = nbrOfCourseHoles + ADD_COLUMNS;
     // the courseName header
     scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
     
     // the hole numbers
     scorecardTable += `<tbody><tr id="holeNumbers"><td id="display-legend">Hole</td>`;
-    for (let i = 0; i < NUMBER_OF_HOLES; i++){
+    for (let i = 0; i < nbrOfCourseHoles; i++){
         scorecardTable += `<td id="scrCrdHlNbr">${i + 1}</td>`; // hole number
     }
     scorecardTable += `<td id="display-legend">Totals</td></tr>`
@@ -66,7 +66,7 @@ function addRowToScoreCardTable(idName, display_legend, idPrepend){
         if (i < 9) { 
             idPrepend_Nbr = '0' + (i + 1);
         } else idPrepend_Nbr = i + 1;
-        scorecardTable += `<td><input type="text" id="${idPrepend}-${idPrepend_Nbr}" size="1"></td>`
+        scorecardTable += `<td><input class="input-box" type="text" id="${idPrepend}-${idPrepend_Nbr}" size="1"></td>`
     }
     scorecardTable += `<td id="tot${idName}"></td></tr>`
 }

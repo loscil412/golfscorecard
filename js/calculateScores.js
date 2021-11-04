@@ -31,7 +31,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
 
     console.log("Checking scope ---");
     console.log("SELECTED_COURSE -- ", SELECTED_COURSE);
-    console.log("NUMBER_OF_HOLES -- ", NUMBER_OF_HOLES);
+    console.log("nbrOfCourseHoles -- ", nbrOfCourseHoles);
     console.log("totalCoursePar -- ", totalCoursePar);
     console.log("TOTAL_COURSE_PAR -- ", TOTAL_COURSE_PAR);
 
@@ -43,7 +43,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let boxWithInput;
     let indexOfBoxWithScore;
     let lengthOfScoreCardStrokeDataArray = Object.keys(SELECTED_COURSE.holes).length;
-    let parPuttsPerCourse = NUMBER_OF_HOLES * 2;
+    let parPuttsPerCourse = nbrOfCourseHoles * PAR_PUTTS_PER_HOLE;
     
     let scoreCard = {
         Course: SELECTED_COURSE.name,
@@ -94,7 +94,8 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      */
     function makeActive(element){
         element.addEventListener('focusin', (event) => {
-            event.target.style.background = 'pink';
+            event.target.style.background = 'rgb(128, 191, 255)';
+            // event.target.style.background = 'pink';
             boxWithInput = document.activeElement;
             let lastTwoChars = (boxWithInput.getAttribute("id").length) - 2;
             indexOfBoxWithScore = ((boxWithInput.getAttribute("id")).substring(lastTwoChars)) - 1; // I have the INDEX of the value
@@ -119,7 +120,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
                     break;
 
                 case 'Putts':
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], 2);
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], PAR_PUTTS_PER_HOLE);
                     break;
                 
                 default:
@@ -184,7 +185,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     function colorizeStrokeToParRelation(userStrokes, par){
         if (userStrokes == 0) { return ''; }
         if (userStrokes < par) { return 'lightgreen'; }
-        if (userStrokes == par) { return 'cyan'; }
+        if (userStrokes == par) { return ''; }
         // if (userStrokes > par) { return 'red'; }
         if (userStrokes > par) { return bogey(userStrokes, par); }
     }
@@ -197,8 +198,10 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * @returns 
      */
     function bogey(strokes, par){
-        if (strokes - par == 1) { return `rgb(26,163,255)`;} 
-        if (strokes - par == 2) { return `rgb(0,122,204)`;}
+        if (strokes - par == 1) { return `rgb(255, 153, 153)`;} 
+        if (strokes - par == 2) { return `rgb(255, 51, 51)`;}
+        // if (strokes - par == 1) { return `rgb(26,163,255)`;} 
+        // if (strokes - par == 2) { return `rgb(0,122,204)`;}
         return `rgb(0,107,179)`;
     }
 

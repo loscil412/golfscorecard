@@ -3,6 +3,9 @@
     --lightYellow: rgba(235, 235, 116, 0.986);
 }
 
+.input-box {
+    text-align: center;
+}
 
 table, td, th {
     border: 1px solid var(--green);
