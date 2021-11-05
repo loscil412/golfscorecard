@@ -51,7 +51,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let scoreCard = {
         Course: SELECTED_COURSE.name,
         Date: new Date().getYear(),
-        CoursePar: 0,
+        CoursePar: SELECTED_COURSE.coursePar,
         StrokeData: [],
         GreensInRegulation: 0,
         TotalStrokes: 0,
@@ -97,7 +97,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      */
     function makeActive(element){
         element.addEventListener('focusin', (event) => {
-            event.target.style.background = 'rgb(128, 191, 255)';
+            event.target.style.background = LIGHT_BLUE;
             // event.target.style.background = 'pink';
             boxWithInput = document.activeElement;
             let lastTwoChars = (boxWithInput.getAttribute("id").length) - 2;
@@ -192,7 +192,6 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         if (userStrokes == 0) { return ''; }
         if (userStrokes < par) { return LIGHT_GREEN; }
         if (userStrokes == par) { return ''; }
-        // if (userStrokes > par) { return 'red'; }
         if (userStrokes > par) { return bogey(userStrokes, par); }
     }
 
@@ -267,9 +266,42 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
                 totalSgsStrokes_putts_plus_wedge += (score.SgsStrokes + score.Putts) // this is dependent on Putts being entered first?
             }
             if (nbrOfHolesForSgsHcp != 0) {
-                sgsHcp = (totalSgsStrokes_putts_plus_wedge / nbrOfHolesForSgsHcp).toFixed(2);
+                // sgsHcp = (totalSgsStrokes_putts_plus_wedge / nbrOfHolesForSgsHcp).toFixed(2);
+                sgsHcp = getGcd(totalSgsStrokes_putts_plus_wedge, nbrOfHolesForSgsHcp);
             } else sgsHcp = "Not Calculated"
 
+        }
+
+        /*
+        A modification to Euclid's theory for finding GCD?
+        End goal is to return 19 / 7 = 2.714285.. as 2 5/7 fraction
+        1. Extract the big number
+        2. find GCD from the decimal value and display as fraction
+        */
+        function getGcd(combinedPutts_Sgs, nbr_of_holes_sgs_played){
+            let _remainder = combinedPutts_Sgs % nbr_of_holes_sgs_played;
+            if (_remainder == 0) { return combinedPutts_Sgs/nbr_of_holes_sgs_played } 
+
+            let big_nbr = Math.floor(combinedPutts_Sgs/nbr_of_holes_sgs_played); // i.e. '2'
+            let a = nbr_of_holes_sgs_played // a should be the larger value (i.e. # of strokes)
+            let copy_of_a = a
+            let b = _remainder // b should be the smaller value (i.e. # of holes)
+            let copy_of_b = b
+            let _gcd = b + 1 // there is a cleaner way I'm sure, but this works to avoid infinite while loops
+            let actual_gcd; // the gcd for the remaining fractional decimals
+            while (_gcd != 1) {
+                while (_gcd > b) {
+                    _gcd = a-b
+                    a = _gcd
+                }
+                a = b
+                b = _gcd
+                _gcd = b+1
+            }
+            actual_gcd = a
+            let numerator = copy_of_b / actual_gcd
+            let denominator = copy_of_a / actual_gcd
+            return `${big_nbr} ${numerator}/${denominator}`
         }
 
         function updateScoreCardObject(){
@@ -289,9 +321,5 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
             document.getElementById("totgir").innerText = totGirs;
             // document.getElementById("totgir").style.background = colorizeStrokeToParRelation(totGirs, nbrOfCourseHoles);    
         }
-
     }
-
-
-
 }
