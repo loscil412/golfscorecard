@@ -44,6 +44,7 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let indexOfBoxWithScore;
     let lengthOfScoreCardStrokeDataArray = Object.keys(SELECTED_COURSE.holes).length;
     let parPuttsPerCourse = nbrOfCourseHoles * PAR_PUTTS_PER_HOLE;
+    let parSgsPerCourse = nbrOfCourseHoles * PAR_SGS_PER_HOLE;
     
     let scoreCard = {
         Course: SELECTED_COURSE.name,
@@ -123,6 +124,10 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
                     event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], PAR_PUTTS_PER_HOLE);
                     break;
                 
+                case 'SgsStrokes':
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], PAR_SGS_PER_HOLE);
+                    break;
+                
                 default:
                     event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore]['Par']);
  
@@ -198,28 +203,64 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * @returns 
      */
     function bogey(strokes, par){
-        if (strokes - par == 1) { return `rgb(255, 153, 153)`;} 
-        if (strokes - par == 2) { return `rgb(255, 51, 51)`;}
-        // if (strokes - par == 1) { return `rgb(26,163,255)`;} 
-        // if (strokes - par == 2) { return `rgb(0,122,204)`;}
-        return `rgb(0,107,179)`;
+        if (strokes - par == 1) return `rgb(255, 153, 153)`; // pink
+        if (strokes - par == 2) return `rgb(255, 153, 51)`; // orange
+        return `rgb(255, 51, 51)`; // red
     }
 
 
     function sumScores(){
         let totUserStrokes = 0;
         let totUserPutts = 0;
+        let totUserSgs = 0;
         scoreCard.StrokeData.forEach(score => {
             totUserStrokes += score.Strokes
             totUserPutts += score.Putts
+            totUserSgs += score.SgsStrokes
+            determineGir(score)
         })
         displayTotalScores();
         
-        function displayTotalScores(){
-            document.getElementById("totUserScore").innerText = totUserStrokes;
-            document.getElementById("totUserScore").style.background = colorizeStrokeToParRelation(totUserStrokes, totalCoursePar);
-            document.getElementById("totnbrOfPutts").innerText = totUserPutts;
-            document.getElementById("totnbrOfPutts").style.background = colorizeStrokeToParRelation(totUserPutts, parPuttsPerCourse);    
-        }
     }
+
+    function displayTotalScores(){
+        document.getElementById("totUserScore").innerText = totUserStrokes;
+        document.getElementById("totUserScore").style.background = colorizeStrokeToParRelation(totUserStrokes, totalCoursePar);
+        document.getElementById("totnbrOfPutts").innerText = totUserPutts;
+        document.getElementById("totnbrOfPutts").style.background = colorizeStrokeToParRelation(totUserPutts, parPuttsPerCourse);    
+        document.getElementById("totshortGame").innerText = totUserSgs;
+        document.getElementById("totshortGame").style.background = colorizeStrokeToParRelation(totUserSgs, parSgsPerCourse);    
+    }
+
+    /*
+    true cases:
+    aLL --> if (Strokes < Par) return true; // birdies are GIR
+    Edge --> if (Strokes == Par && Putts == 0) return false // chip-ins for Par off the green
+         --> if (Par - Strokes == 1 && Putts == 0) return false // chip-ins for Birdie off the green
+    Par 4, 5 --> if (Strokes - Putts <= 2) return true
+    Par 3 --> if (Strokes == Par && (Putts == 2) return true
+          --> 
+          strokes 3, putts 2 (1); strokes 4, putts 3 (1); strokes 2, putts 1 (1); 
+    
+    */
+    function determineGir(score){
+        
+        if (score.Putts == 0 && (score.Par == score.Strokes || score.Par - score.Strokes == 1)) return false; // saving chip-ins off the green
+        if (score.Strokes < score.Par) return true; // birdie with a putt or chip-ins for eagle or hole-in-one
+        
+        switch (score.Par) {
+            case 3:
+                if (score.Strokes - score.Putts == 1) return true; // one on and however many putts into hole
+                break;            
+            case 4:
+                if (score.Strokes - score.Putts <= 2) return true; // two on and however may putts into hole   
+                break;
+            case 5:
+                if (score.Strokes - score.Putts <= 3) return true; // three on and however may putts into hole   
+                break;
+            default:
+                return false;
+        }      
+    }
+
 }

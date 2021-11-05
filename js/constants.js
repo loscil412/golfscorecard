@@ -8,3 +8,4 @@ const NUMERIC_REGEX = /^[\d]+$/;
 let indexOfBoxWithScore;
 let scoreCard;
 const PAR_PUTTS_PER_HOLE = 2
+const PAR_SGS_PER_HOLE = 1
