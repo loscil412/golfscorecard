@@ -213,38 +213,43 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         let totUserStrokes = 0;
         let totUserPutts = 0;
         let totUserSgs = 0;
-        scoreCard.StrokeData.forEach(score => {
+        let totGirs = 0
+        let index = ''
+        scoreCard.StrokeData.forEach((score, i) => {
+            if (i < 9) { 
+                index = '0' + (i + 1) 
+            } else index = i + 1;
+
             totUserStrokes += score.Strokes
             totUserPutts += score.Putts
             totUserSgs += score.SgsStrokes
-            determineGir(score)
+            score.Gir = determineGir(score)
+            if (score.Gir) {
+                totGirs += 1
+                document.getElementById("gir-" + index).defaultValue = 'X';
+
+            } else document.getElementById("gir-" + index).defaultValue = '';
+
         })
         displayTotalScores();
-        
-    }
 
-    function displayTotalScores(){
-        document.getElementById("totUserScore").innerText = totUserStrokes;
-        document.getElementById("totUserScore").style.background = colorizeStrokeToParRelation(totUserStrokes, totalCoursePar);
-        document.getElementById("totnbrOfPutts").innerText = totUserPutts;
-        document.getElementById("totnbrOfPutts").style.background = colorizeStrokeToParRelation(totUserPutts, parPuttsPerCourse);    
-        document.getElementById("totshortGame").innerText = totUserSgs;
-        document.getElementById("totshortGame").style.background = colorizeStrokeToParRelation(totUserSgs, parSgsPerCourse);    
-    }
-
-    /*
-    true cases:
-    aLL --> if (Strokes < Par) return true; // birdies are GIR
-    Edge --> if (Strokes == Par && Putts == 0) return false // chip-ins for Par off the green
-         --> if (Par - Strokes == 1 && Putts == 0) return false // chip-ins for Birdie off the green
-    Par 4, 5 --> if (Strokes - Putts <= 2) return true
-    Par 3 --> if (Strokes == Par && (Putts == 2) return true
-          --> 
-          strokes 3, putts 2 (1); strokes 4, putts 3 (1); strokes 2, putts 1 (1); 
+        function displayTotalScores(){
+            document.getElementById("totUserScore").innerText = totUserStrokes;
+            document.getElementById("totUserScore").style.background = colorizeStrokeToParRelation(totUserStrokes, totalCoursePar);
+            document.getElementById("totnbrOfPutts").innerText = totUserPutts;
+            document.getElementById("totnbrOfPutts").style.background = colorizeStrokeToParRelation(totUserPutts, parPuttsPerCourse);    
+            document.getElementById("totshortGame").innerText = totUserSgs;
+            document.getElementById("totshortGame").style.background = colorizeStrokeToParRelation(totUserSgs, parSgsPerCourse);    
+            document.getElementById("totgir").innerText = totGirs;
+            // document.getElementById("totgir").style.background = colorizeStrokeToParRelation(totGirs, nbrOfCourseHoles);    
+        }
     
-    */
-    function determineGir(score){
         
+    }
+
+
+    function determineGir(score){
+        if (score.Strokes == 0) return false; // edge case for the sumScore() loop
         if (score.Putts == 0 && (score.Par == score.Strokes || score.Par - score.Strokes == 1)) return false; // saving chip-ins off the green
         if (score.Strokes < score.Par) return true; // birdie with a putt or chip-ins for eagle or hole-in-one
         
@@ -259,8 +264,10 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
                 if (score.Strokes - score.Putts <= 3) return true; // three on and however may putts into hole   
                 break;
             default:
-                return false;
-        }      
+                return false; // only default if par is < 3 or par > 5....
+        }
+        // default to false if switches are captured but not matched to logic
+        return false;      
     }
 
 }
