@@ -1,16 +1,16 @@
 :root {
-    --green: rgba(14, 90, 45, 0.945);
-    --lightYellow: rgb(255, 255, 188);
+    --green: rgba(29, 70, 60, 0.575);
+    --lightYellow: rgba(235, 235, 116, 0.986);
 }
 
+.input-box {
+    text-align: center;
+}
 
 table, td, th {
     border: 1px solid var(--green);
     border-radius: 8px;
-}
-
-#scrCrdHlNbr {
-    background-color: var(--lightYellow);
+    text-align: center;
 }
 
 thead, tfoot {
@@ -20,10 +20,23 @@ thead, tfoot {
 
 }
 
+
+#scrCrdHlNbr {
+    width: 4%;
+    background-color: var(--lightYellow);
+    text-align: center;
+}
+
+
+#display-legend {
+    width: 9%;
+    text-align: center;
+}
+
 .button {
     color: var(--green);
     background-color: var(--lightYellow);
-    border-color: rgba(14, 90, 44, 0.356);
+    border-color: rgba(50, 153, 91, 0.356);
     width: fit-content;
     border-radius: 8px;
     margin: 10px;

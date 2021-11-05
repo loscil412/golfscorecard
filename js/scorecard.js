@@ -1,63 +1,75 @@
-let SELECTED_COURSE;
-let NUMBER_OF_HOLES;
-const ADD_COLUMNS = 2;
 let menu = document.getElementById("menu")
 addCoursesToMenu();
-menu.addEventListener("change", drawScoreCard)
 
+// on change (or select of course) to menu, we draw the correct score card
+menu.addEventListener("change", setCourse)
 
-function getCourse(){
-    SELECTED_COURSE = COURSE_LIST[(document.querySelector('select').value) * 1]
+function setCourse(){
+    SELECTED_COURSE = COURSE_LIST[(document.querySelector('select').value)]
     document.getElementById("courseSelection").innerHTML = SELECTED_COURSE.name
     document.getElementById("dynamicCourseName").innerText = ": " + SELECTED_COURSE.name
-    if (document.getElementById("courseNameCard") != null) {
-        document.getElementById("courseNameCard").innerHTML = SELECTED_COURSE.name;
-    }
+    totalCoursePar = 0
+    drawScoreCard();
 }
 
 function drawScoreCard(){
-    getCourse();
-    NUMBER_OF_HOLES = Object.keys(SELECTED_COURSE.holes).length;
-    let colspanLength = NUMBER_OF_HOLES + ADD_COLUMNS;
+    nbrOfCourseHoles = Object.keys(SELECTED_COURSE.holes).length;
+    nbrOfColumns = nbrOfCourseHoles + ADD_COLUMNS;
     // the courseName header
-    let scorecardTable = `<table><thead id="courseName"><tr><th colspan=${colspanLength}>${SELECTED_COURSE.name}</th></tr></thead>`;
+    scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
     
     // the hole numbers
-    scorecardTable += `<tbody><tr id="holeNumbers"><td id="legend">Hole</td>`;
-    for (let i = 0; i < NUMBER_OF_HOLES; i++){
+    scorecardTable += `<tbody><tr id="holeNumbers"><td id="display-legend">Hole</td>`;
+    for (let i = 0; i < nbrOfCourseHoles; i++){
         scorecardTable += `<td id="scrCrdHlNbr">${i + 1}</td>`; // hole number
     }
-    scorecardTable += "<td>Totals</td></tr>"
+    scorecardTable += `<td id="display-legend">Totals</td></tr>`
 
     // the par score per hole
-    let totalCoursePar = 0;
-    scorecardTable += `<tr id="coursePar"><td id="legend">Par</td>`;
-    for (let i = 0; i < colspanLength - ADD_COLUMNS; i++){
+    // let totalCoursePar = 0;
+    scorecardTable += `<tr id="coursePar"><td id="display-legend">Par</td>`;
+    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
         scorecardTable += `<td>${SELECTED_COURSE.holes[i+1]}</td>`; // hole par
         totalCoursePar += SELECTED_COURSE.holes[i+1];
     }
-    scorecardTable += `<td>${totalCoursePar}</td>`;
+    scorecardTable += `<td id="display-legend">${totalCoursePar}</td></tr>`;
 
-    // strokes played
-    scorecardTable += `<tr id="userScores"><td id="legend">Strokes</td>`;
-    for (let i = 0; i < colspanLength - ADD_COLUMNS; i++){
-        scorecardTable += `<td><input type="text" id="score-${i + 1}" size="1"></td>`
-    }
-    scorecardTable += `<td id="totUserScore"></td>`
-
-    scorecardTable += "</tr></tbody></table>";
-
-
-    // additional rows of data go here
-    // puts
-    // GIR calculator
-    // FIR
-    // short Game HCP
+    // add data rows with reuseable function
+    addRowToScoreCardTable("UserScore", "Strokes", "score")
+    addRowToScoreCardTable("nbrOfPutts", "Putts", "putt")
+    addRowToScoreCardTable("shortGame", "SGS", "sgs")
+    addRowToScoreCardTable("gir", "GIR", "gir")
+   
+/*
+ * additional rows of data go here
+ * GIR calculator
+ * FIR
+ * short game HCP
+ */
+    scorecardTable += "</tbody></table>";
     
     // now the DOM is aware of the scorecard and we are ready to capture user input
     document.getElementById("table").innerHTML = scorecardTable;
     drawResetButton();
-    captureAndCalculateStrokes(totalCoursePar);
+    captureAndCalculateStrokes();
+}
+
+/**
+ * 
+ * @param {String} idName "ShortGame"
+ * @param {String} display_legend "SGS"
+ * @param {String} idPrepend "sgs"
+ */
+function addRowToScoreCardTable(idName, display_legend, idPrepend){
+    let idPrepend_Nbr = '';
+    scorecardTable += `<tr id="${idName}"><td id="display-legend">${display_legend}</td>`
+    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+        if (i < 9) { 
+            idPrepend_Nbr = '0' + (i + 1);
+        } else idPrepend_Nbr = i + 1;
+        scorecardTable += `<td><input class="input-box" type="text" id="${idPrepend}-${idPrepend_Nbr}" size="1"></td>`
+    }
+    scorecardTable += `<td id="tot${idName}"></td></tr>`
 }
 
 function addCoursesToMenu(){
@@ -70,8 +82,4 @@ function addCoursesToMenu(){
 
 function drawResetButton(){
     document.getElementById("inputRow").innerHTML = `<button name="scoreReset" id="sr" class="button">Reset Strokes</button>`;
-
 }
-
-    
-
