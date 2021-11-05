@@ -8,6 +8,7 @@ function setCourse(){
     SELECTED_COURSE = COURSE_LIST[(document.querySelector('select').value)]
     document.getElementById("courseSelection").innerHTML = SELECTED_COURSE.name
     document.getElementById("dynamicCourseName").innerText = ": " + SELECTED_COURSE.name
+    totalCoursePar = 0
     drawScoreCard();
 }
 
