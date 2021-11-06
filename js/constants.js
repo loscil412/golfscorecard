@@ -7,6 +7,15 @@ const DARK_RED = `rgb(255, 51, 51)`
 const ORANGE = `rgb(255, 153, 51)`
 const LIGHT_GREEN = 'lightgreen'
 const LIGHT_BLUE = 'rgb(128, 191, 255)'
+const SCORE_CARD_STROKE_PER_HOLE = 'Strokes'
+const SCORE_CARD_PUTTS_PER_HOLE = 'Putts'
+const SCORE_CARD_SGS_STROKES_PER_HOLE = 'SgsStrokes'
+const SCORE_CARD_HOLE_PAR = 'Par'
+
+
+
+
+
 let SELECTED_COURSE; 
 let nbrOfCourseHoles;
 let scorecardTable;

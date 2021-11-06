@@ -1,3 +1,4 @@
+import { captureAndCalculateStrokes } from './calculateScores.js'
 let menu = document.getElementById("menu")
 addCoursesToMenu();
 
