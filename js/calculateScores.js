@@ -1,25 +1,25 @@
 /**
  * Rather than track multiple array objects
- * The score card will be one object
+ * The hole_data card will be one object
  * ScoreCard : {
  *  Date:
- *  Course: 
- *  CoursePar: 
- *  StrokeData: [
+ *  course: 
+ *  course_par: 
+ *  stroke_data: [
  *     {
  *      HoleNbr : {
- *          Par: x,
- *          Strokes: x,
- *          Putts: x,
+ *          par: x,
+ *          strokes: x,
+ *          putts: x,
  *          SGSShots: x,
  *          GIR: boolean
  *          }
  *      }, ...
 *      }
     *  ],
-    *  GreensInRegulation: x,
-    *  TotalStrokes: x,
-    *  TotalPutts: x,
+    *  greens_in_reg: x,
+    *  total_strokes_played: x,
+    *  total_putts: x,
     *  SgsHcp: x.x
     * 
     * }
@@ -45,25 +45,25 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let parSgsPerCourse = nbrOfCourseHoles * PAR_SGS_PER_HOLE;
     
     let scoreCard = {
-        Course: SELECTED_COURSE.name,
+        course: SELECTED_COURSE.name,
         Date: new Date().getYear(),
-        CoursePar: SELECTED_COURSE.coursePar,
-        StrokeData: [],
-        GreensInRegulation: 0,
-        TotalStrokes: 0,
-        TotalPutts: 0,
-        ShortGameHcp: 0,
-        Create_Time: Date.now()
+        course_par: SELECTED_COURSE.coursePar,
+        stroke_data: [],
+        greens_in_reg: 0,
+        total_strokes_played: 0,
+        total_putts: 0,
+        short_game_hcp: 0,
+        create_time: Date.now()
     }
 
     for (let i = 0 ; i < lengthOfScoreCardStrokeDataArray; i++){
-        scoreCard.StrokeData.push(
+        scoreCard.stroke_data.push(
             {
-                Par: SELECTED_COURSE.holes[i+1],
-                Strokes: 0,
-                Putts: 0,
-                SgsStrokes: 0,
-                Gir: false
+                par: SELECTED_COURSE.holes[i+1],
+                strokes: 0,
+                putts: 0,
+                sgs_strokes: 0,
+                gir: false
             }
         )
     }
@@ -71,30 +71,29 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     console.log(scoreCard)
     rowOfScores.forEach( (element) => {
         makeActive(element);
-        makeInactive(element, 'Strokes');
+        makeInactive(element, 'strokes');
 
     });
 
     rowOfPutts.forEach( (element) => {
         makeActive(element);
-        makeInactive(element, 'Putts');
+        makeInactive(element, 'putts');
     });
 
     rowOfSgs.forEach( (element) => {
         makeActive(element);
-        makeInactive(element, 'SgsStrokes');
+        makeInactive(element, 'sgs_strokes');
     });
 
     /**
      * When a box is active for user input, 
      * make it pink
-     * capture the index of the box to modify the scoreCard.StrokeData array
+     * capture the index of the box to modify the scoreCard.stroke_data array
      * @param {*} element 
      */
     function makeActive(element){
         element.addEventListener('focusin', (event) => {
             event.target.style.background = LIGHT_BLUE;
-            // event.target.style.background = 'pink';
             boxWithInput = document.activeElement;
             let lastTwoChars = (boxWithInput.getAttribute("id").length) - 2;
             indexOfBoxWithScore = ((boxWithInput.getAttribute("id")).substring(lastTwoChars)) - 1; // I have the INDEX of the value
@@ -102,10 +101,10 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     }
 
    /**
-    * On exiting a box, check if the box already has a score
-    * no? try to add score -- yes? do nothing
+    * On exiting a box, check if the box already has a hole_data
+    * no? try to add hole_data -- yes? do nothing
     * @param {*} element 
-    * @param {String} strokeDataElement attribute for scoreCard.StrokeData array
+    * @param {String} strokeDataElement attribute for scoreCard.stroke_data array
     */
     function makeInactive(element, strokeDataElement){
         element.addEventListener('focusout', (event) => {
@@ -114,20 +113,20 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
                 addStroke(scoreToCapture, event.target, strokeDataElement);
             }
             switch (strokeDataElement){
-                case 'Strokes':
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore]['Par']);
+                case 'strokes':
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore]['par']);
                     break;
 
-                case 'Putts':
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], PAR_PUTTS_PER_HOLE);
+                case 'putts':
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], PAR_PUTTS_PER_HOLE);
                     break;
                 
-                case 'SgsStrokes':
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], PAR_SGS_PER_HOLE);
+                case 'sgs_strokes':
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], PAR_SGS_PER_HOLE);
                     break;
                 
                 default:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore]['Par']);
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore]['par']);
             }
             sumScores();    
             // console.log(scoreCard)
@@ -138,10 +137,10 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * reset scores on click of a button
      */
     document.getElementById("sr").addEventListener("click", () => {
-        let dataAttributes = ['Strokes', 'Putts', 'SgsStrokes']
+        let dataAttributes = ['strokes', 'putts', 'sgs_strokes']
         for (let i = 0; i < lengthOfScoreCardStrokeDataArray; i++){
             for (let j = 0; j < dataAttributes.length; j++){
-                scoreCard.StrokeData[i][dataAttributes[j]] = '';
+                scoreCard.stroke_data[i][dataAttributes[j]] = '';
             }
             rowOfScores[i].style.background = ''; 
             rowOfScores[i].value = '';    
@@ -154,31 +153,31 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     });
    
     /**
-     * Is the received score different from the already stored score?
+     * Is the received hole_data different from the already stored hole_data?
      * @param {*} existingScore 
      * @returns boolean
      */
     function isStrokeRecorded(existingScore, strokeDataElement){
-        return (scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] == existingScore);
+        return (scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement] == existingScore);
     }
 
     /**
      * Sanitize the input with empty string check
      * (empty strings are stored as '0' in userStrokeArray) 
-     * strings are not stored and reset to "" in visible score card
-     * @param {*} score 
+     * strings are not stored and reset to "" in visible hole_data card
+     * @param {*} hole_data 
      */
-    function addStroke(score, targetEvent, strokeDataElement){
+    function addStroke(hole_data, targetEvent, strokeDataElement){
         // console.log('------- ', targetEvent)
-        // console.log('--score?  ', score)
+        // console.log('--hole_data?  ', hole_data)
 
-        if (score == "") {
-            scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = 0;
+        if (hole_data == "") {
+            scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement] = 0;
         } else {
-            if (NUMERIC_REGEX.test(score)) {
-                scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = score * 1;
+            if (NUMERIC_REGEX.test(hole_data)) {
+                scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement] = hole_data * 1;
             } else {
-                scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement] = 0;
+                scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement] = 0;
                 targetEvent.value = "";            
             }    
         }
@@ -214,18 +213,18 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         let totalSgsStrokes_putts_plus_wedge = 0;
         let sgsHcp = 0;
 
-        // looping through the scoreCard.StrokeData object
-        scoreCard.StrokeData.forEach((score, i) => {
+        // looping through the scoreCard.stroke_data object
+        scoreCard.stroke_data.forEach((hole_data, i) => {
             if (i < 9) { 
                 i = '0' + (i + 1) 
             } else i = i + 1;
 
-            totUserStrokes += score.Strokes
-            totUserPutts += score.Putts
-            totUserSgs += score.SgsStrokes
-            calculateSgsHcp(score); // calculate here? or when card is fully tallied?
-            score.Gir = determineGir(score)
-            if (score.Gir) {
+            totUserStrokes += hole_data.strokes
+            totUserPutts += hole_data.putts
+            totUserSgs += hole_data.sgs_strokes
+            calculateSgsHcp(hole_data); // calculate here? or when card is fully tallied?
+            hole_data.gir = determineGir(hole_data)
+            if (hole_data.gir) {
                 totGirs += 1
                 document.getElementById("gir-" + i).defaultValue = 'X';
             } else document.getElementById("gir-" + i).defaultValue = '';
@@ -234,20 +233,20 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         updateScoreCardObject();
         displayTotalScores();
 
-        function determineGir(score){
-            if (score.Strokes == 0) return false; // edge case for the sumScore() loop
-            if (score.Putts == 0 && (score.Par == score.Strokes || score.Par - score.Strokes == 1)) return false; // saving chip-ins off the green
-            if (score.Strokes < score.Par) return true; // birdie with a putt or chip-ins for eagle or hole-in-one
+        function determineGir(hole_data){
+            if (hole_data.strokes == 0) return false; // edge case for the sumScore() loop
+            if (hole_data.putts == 0 && (hole_data.par == hole_data.strokes || hole_data.par - hole_data.strokes == 1)) return false; // saving chip-ins off the green
+            if (hole_data.strokes < hole_data.par) return true; // birdie with a putt or chip-ins for eagle or hole-in-one
             
-            switch (score.Par) {
+            switch (hole_data.par) {
                 case 3:
-                    if (score.Strokes - score.Putts == 1) return true; // one on and however many putts into hole
+                    if (hole_data.strokes - hole_data.putts == 1) return true; // one on and however many putts into hole
                     break;            
                 case 4:
-                    if (score.Strokes - score.Putts <= 2) return true; // two on and however may putts into hole   
+                    if (hole_data.strokes - hole_data.putts <= 2) return true; // two on and however may putts into hole   
                     break;
                 case 5:
-                    if (score.Strokes - score.Putts <= 3) return true; // three on and however may putts into hole   
+                    if (hole_data.strokes - hole_data.putts <= 3) return true; // three on and however may putts into hole   
                     break;
                 default:
                     return false; // only default if par is < 3 or par > 5....
@@ -256,10 +255,10 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
             return false;      
         }
     
-        function calculateSgsHcp(score){
-            if (score.SgsStrokes != 0) {
+        function calculateSgsHcp(hole_data){
+            if (hole_data.sgs_strokes != 0) {
                 nbrOfHolesForSgsHcp += 1
-                totalSgsStrokes_putts_plus_wedge += (score.SgsStrokes + score.Putts) // this is dependent on Putts being entered first?
+                totalSgsStrokes_putts_plus_wedge += (hole_data.sgs_strokes + hole_data.putts) // this is dependent on putts being entered first?
             }
             if (nbrOfHolesForSgsHcp != 0) {
                 // sgsHcp = (totalSgsStrokes_putts_plus_wedge / nbrOfHolesForSgsHcp).toFixed(2); // decimal
@@ -309,10 +308,10 @@ function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         }
 
         function updateScoreCardObject(){
-            scoreCard.TotalStrokes = totUserStrokes;
-            scoreCard.TotalPutts = totUserPutts;
-            scoreCard.GreensInRegulation = totGirs;
-            scoreCard.ShortGameHcp = sgsHcp;
+            scoreCard.total_strokes_played = totUserStrokes;
+            scoreCard.total_putts = totUserPutts;
+            scoreCard.greens_in_reg = totGirs;
+            scoreCard.short_game_hcp = sgsHcp;
         }
 
         function displayTotalScores(){
