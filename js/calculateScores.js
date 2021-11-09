@@ -24,16 +24,9 @@
  * 
  * }
 */
-import { determineGir, sumScores } from "../js/calculations.js"
+import { sumScores } from "../js/calculations.js"
 
 export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
-
-    console.log("Checking scope ---");
-    console.log("SELECTED_COURSE -- ", SELECTED_COURSE);
-    console.log("nbrOfCourseHoles -- ", nbrOfCourseHoles);
-    console.log("totalCoursePar -- ", totalCoursePar);
-    console.log("TOTAL_COURSE_PAR -- ", TOTAL_COURSE_PAR);
-
     let rowOfScores = document.querySelectorAll("input[id^='score-']"); // a regex like selector, returns an array
     let rowOfPutts = document.querySelectorAll("input[id^='putt-']"); // a regex like selector, returns an array
     let rowOfSgs = document.querySelectorAll("input[id^='sgs-']"); // a regex like selector, returns an array
@@ -192,11 +185,9 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
             if (score.gir) {
                 let girBox = document.getElementById("gir-" + i)
                 document.getElementById("gir-" + i).defaultValue = 'X';
-                console.log(document.getElementById("gir-" + i));
     
             } else  {
                 document.getElementById("gir-" + i).defaultValue = '';
-                console.log(document.getElementById("gir-" + i));
             }
         });
     }
