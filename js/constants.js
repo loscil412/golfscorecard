@@ -7,6 +7,11 @@ const DARK_RED = `rgb(255, 51, 51)`
 const ORANGE = `rgb(255, 153, 51)`
 const LIGHT_GREEN = 'lightgreen'
 const LIGHT_BLUE = 'rgb(128, 191, 255)'
+
+
+
+
+
 let SELECTED_COURSE; 
 let nbrOfCourseHoles;
 let scorecardTable;

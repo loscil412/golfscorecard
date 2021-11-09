@@ -11,8 +11,8 @@
  *          par: x,
  *          strokes: x,
  *          putts: x,
- *          SGSShots: x,
- *          GIR: boolean
+ *          sgs_strokes: x,
+ *          gir: boolean
  *          }
  *      }, ...
 *      }
@@ -20,7 +20,7 @@
     *  greens_in_reg: x,
     *  total_strokes_played: x,
     *  total_putts: x,
-    *  SgsHcp: x.x
+    *  short_game_hcp: x.x
     * 
     * }
     */
