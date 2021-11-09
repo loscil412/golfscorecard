@@ -119,19 +119,19 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
             }
             switch (strokeDataElement){
                 case SCORE_CARD_STROKE_PER_HOLE:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
                     break;
 
                 case SCORE_CARD_PUTTS_PER_HOLE:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], PAR_PUTTS_PER_HOLE);
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], PAR_PUTTS_PER_HOLE);
                     break;
                 
                 case SCORE_CARD_SGS_STROKES_PER_HOLE:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], PAR_SGS_PER_HOLE);
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], PAR_SGS_PER_HOLE);
                     break;
                 
                 default:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.StrokeData[indexOfBoxWithScore][strokeDataElement], scoreCard.StrokeData[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
+                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
             }
             sumScores(scoreCard);  
             displayTotalScores();  
@@ -215,13 +215,13 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     }
 
     function displayTotalScores(){
-        document.getElementById("totUserScore").innerText = scoreCard.TotalStrokes;
-        document.getElementById("totUserScore").style.background = colorizeStrokeToParRelation(scoreCard.TotalStrokes, totalCoursePar);
-        document.getElementById("totnbrOfPutts").innerText = scoreCard.TotalPutts;
-        document.getElementById("totnbrOfPutts").style.background = colorizeStrokeToParRelation(scoreCard.TotalPutts, parPuttsPerCourse);    
-        document.getElementById("totshortGame").innerText = scoreCard.ShortGameHcp;
+        document.getElementById("totUserScore").innerText = scoreCard[SCORE_CARD_TOTAL_USER_STROKES];
+        document.getElementById("totUserScore").style.background = colorizeStrokeToParRelation(scoreCard[SCORE_CARD_TOTAL_USER_STROKES], totalCoursePar);
+        document.getElementById("totnbrOfPutts").innerText = scoreCard[SCORE_CARD_TOTAL_USER_PUTTS];
+        document.getElementById("totnbrOfPutts").style.background = colorizeStrokeToParRelation(scoreCard[SCORE_CARD_TOTAL_USER_PUTTS], parPuttsPerCourse);    
+        document.getElementById("totshortGame").innerText = scoreCard[SCORE_CARD_SHORT_GAME_HCP];
         // document.getElementById("totshortGame").style.background = colorizeStrokeToParRelation(totUserSgs, parSgsPerCourse);    
-        document.getElementById("totgir").innerText = scoreCard.GreensInRegulation;
+        document.getElementById("totgir").innerText = scoreCard[SCORE_CARD_TOTAL_GREENS_IN_REG];
         // document.getElementById("totgir").style.background = colorizeStrokeToParRelation(totGirs, nbrOfCourseHoles);    
     }
 }

@@ -1,17 +1,17 @@
 export function determineGir(score){
-    if (score.Strokes == 0) return false; // edge case for the sumScore() loop
-    if (score.Putts == 0 && (score.Par == score.Strokes || score.Par - score.Strokes == 1)) return false; // saving chip-ins off the green
-    if (score.Strokes < score.Par) return true; // birdie with a putt or chip-ins for eagle or hole-in-one
+    if (score[SCORE_CARD_STROKE_PER_HOLE] == 0) return false; // edge case for the sumScore() loop
+    if (score[SCORE_CARD_PUTTS_PER_HOLE] == 0 && (score[SCORE_CARD_HOLE_PAR] == score[SCORE_CARD_STROKE_PER_HOLE] || score[SCORE_CARD_HOLE_PAR] - score[SCORE_CARD_STROKE_PER_HOLE] == 1)) return false; // saving chip-ins off the green
+    if (score[SCORE_CARD_STROKE_PER_HOLE] < score[SCORE_CARD_HOLE_PAR]) return true; // birdie with a putt or chip-ins for eagle or hole-in-one
     
-    switch (score.Par) {
+    switch (score[SCORE_CARD_HOLE_PAR]) {
         case 3:
-            if (score.Strokes - score.Putts == 1) return true; // one on and however many putts into hole
+            if (score[SCORE_CARD_STROKE_PER_HOLE] - score[SCORE_CARD_PUTTS_PER_HOLE] == 1) return true; // one on and however many putts into hole
             break;            
         case 4:
-            if (score.Strokes - score.Putts <= 2) return true; // two on and however may putts into hole   
+            if (score[SCORE_CARD_STROKE_PER_HOLE] - score[SCORE_CARD_PUTTS_PER_HOLE] <= 2) return true; // two on and however may putts into hole   
             break;
         case 5:
-            if (score.Strokes - score.Putts <= 3) return true; // three on and however may putts into hole   
+            if (score[SCORE_CARD_STROKE_PER_HOLE] - score[SCORE_CARD_PUTTS_PER_HOLE] <= 3) return true; // three on and however may putts into hole   
             break;
         default:
             return false; // only default if par is < 3 or par > 5....
@@ -29,18 +29,18 @@ export function sumScores(scoreCard){
     let totalSgsStrokes_putts_plus_wedge = 0;
     let sgsHcp = 0;
 
-    // looping through the scoreCard.StrokeData object
-    scoreCard.StrokeData.forEach((score, i) => {
+    // looping through the scoreCard.stroke_data object
+    scoreCard.stroke_data.forEach((score, i) => {
         if (i < 9) { 
             i = '0' + (i + 1) 
         } else i = i + 1;
 
-        totUserStrokes += score.Strokes
-        totUserPutts += score.Putts
-        totUserSgs += score.SgsStrokes
+        totUserStrokes += score[SCORE_CARD_STROKE_PER_HOLE]
+        totUserPutts += score[SCORE_CARD_PUTTS_PER_HOLE]
+        totUserSgs += score[SCORE_CARD_SGS_STROKES_PER_HOLE]
         calculateSgsHcp(score); // calculate here? or when card is fully tallied?
-        score.Gir = determineGir(score)
-        if (score.Gir) {
+        score.gir = determineGir(score)
+        if (score.gir) {
             totGirs += 1
             document.getElementById("gir-" + i).defaultValue = 'X';
         } else document.getElementById("gir-" + i).defaultValue = '';
@@ -49,19 +49,19 @@ export function sumScores(scoreCard){
     updateScoreCardObject();
 
     function determineGir(score){
-        if (score.Strokes == 0) return false; // edge case for the sumScore() loop
-        if (score.Putts == 0 && (score.Par == score.Strokes || score.Par - score.Strokes == 1)) return false; // saving chip-ins off the green
-        if (score.Strokes < score.Par) return true; // birdie with a putt or chip-ins for eagle or hole-in-one
+        if (score[SCORE_CARD_STROKE_PER_HOLE] == 0) return false; // edge case for the sumScore() loop
+        if (score[SCORE_CARD_PUTTS_PER_HOLE] == 0 && (score[SCORE_CARD_HOLE_PAR] == score[SCORE_CARD_STROKE_PER_HOLE] || score[SCORE_CARD_HOLE_PAR] - score[SCORE_CARD_STROKE_PER_HOLE] == 1)) return false; // saving chip-ins off the green
+        if (score[SCORE_CARD_STROKE_PER_HOLE] < score[SCORE_CARD_HOLE_PAR]) return true; // birdie with a putt or chip-ins for eagle or hole-in-one
         
-        switch (score.Par) {
+        switch (score[SCORE_CARD_HOLE_PAR]) {
             case 3:
-                if (score.Strokes - score.Putts == 1) return true; // one on and however many putts into hole
+                if (score[SCORE_CARD_STROKE_PER_HOLE] - score[SCORE_CARD_PUTTS_PER_HOLE] == 1) return true; // one on and however many putts into hole
                 break;            
             case 4:
-                if (score.Strokes - score.Putts <= 2) return true; // two on and however may putts into hole   
+                if (score[SCORE_CARD_STROKE_PER_HOLE] - score[SCORE_CARD_PUTTS_PER_HOLE] <= 2) return true; // two on and however may putts into hole   
                 break;
             case 5:
-                if (score.Strokes - score.Putts <= 3) return true; // three on and however may putts into hole   
+                if (score[SCORE_CARD_STROKE_PER_HOLE] - score[SCORE_CARD_PUTTS_PER_HOLE] <= 3) return true; // three on and however may putts into hole   
                 break;
             default:
                 return false; // only default if par is < 3 or par > 5....
@@ -71,9 +71,9 @@ export function sumScores(scoreCard){
     }
 
     function calculateSgsHcp(score){
-        if (score.SgsStrokes != 0) {
+        if (score[SCORE_CARD_SGS_STROKES_PER_HOLE] != 0) {
             nbrOfHolesForSgsHcp += 1
-            totalSgsStrokes_putts_plus_wedge += (score.SgsStrokes + score.Putts) // this is dependent on Putts being entered first?
+            totalSgsStrokes_putts_plus_wedge += (score[SCORE_CARD_SGS_STROKES_PER_HOLE] + score[SCORE_CARD_PUTTS_PER_HOLE]) // this is dependent on Putts being entered first?
         }
         if (nbrOfHolesForSgsHcp != 0) {
             // sgsHcp = (totalSgsStrokes_putts_plus_wedge / nbrOfHolesForSgsHcp).toFixed(2); // decimal
@@ -98,6 +98,7 @@ export function sumScores(scoreCard){
     */
     function getGcd(combinedPutts_Sgs, nbr_of_holes_sgs_played){
         let _remainder = combinedPutts_Sgs % nbr_of_holes_sgs_played; // 16 % 6 = 4
+        if (isNaN(_remainder)) return 'NaN'
         if (_remainder == 0) { return combinedPutts_Sgs/nbr_of_holes_sgs_played } // 4
 
         let big_nbr = Math.floor(combinedPutts_Sgs/nbr_of_holes_sgs_played); // i.e. 16/6 = 2
@@ -123,9 +124,9 @@ export function sumScores(scoreCard){
     }
 
     function updateScoreCardObject(){
-        scoreCard.TotalStrokes = totUserStrokes;
-        scoreCard.TotalPutts = totUserPutts;
-        scoreCard.GreensInRegulation = totGirs;
-        scoreCard.ShortGameHcp = sgsHcp;
+        scoreCard.total_strokes_played = totUserStrokes;
+        scoreCard.total_putts = totUserPutts;
+        scoreCard.greens_in_reg = totGirs;
+        scoreCard.short_game_hcp = sgsHcp;
     }
 }
