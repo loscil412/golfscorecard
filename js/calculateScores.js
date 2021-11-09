@@ -15,15 +15,15 @@
  *          gir: boolean
  *          }
  *      }, ...
-*      }
-    *  ],
-    *  greens_in_reg: x,
-    *  total_strokes_played: x,
-    *  total_putts: x,
-    *  short_game_hcp: x.x
-    * 
-    * }
-    */
+ *      }
+ *  ],
+ *  greens_in_reg: x,
+ *  total_strokes_played: x,
+ *  total_putts: x,
+ *  short_game_hcp: x.x
+ * 
+ * }
+*/
 import { determineGir, sumScores } from "../js/calculations.js"
 
 export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
@@ -46,32 +46,7 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let parPuttsPerCourse = nbrOfCourseHoles * PAR_PUTTS_PER_HOLE;
     let parSgsPerCourse = nbrOfCourseHoles * PAR_SGS_PER_HOLE;
     
-    let sc = new ScoreCard()
-    console.log('sc class --> ', sc)
-
-    let scoreCard = {
-        course: SELECTED_COURSE.name,
-        Date: new Date().getYear(),
-        course_par: SELECTED_COURSE.coursePar,
-        stroke_data: [],
-        greens_in_reg: 0,
-        total_strokes_played: 0,
-        total_putts: 0,
-        short_game_hcp: 0,
-        create_time: Date.now()
-    }
-
-    for (let i = 0 ; i < lengthOfScoreCardStrokeDataArray; i++){
-        scoreCard.stroke_data.push(
-            {
-                par: SELECTED_COURSE.holes[i+1],
-                strokes: 0,
-                putts: 0,
-                sgs_strokes: 0,
-                gir: false
-            }
-        )
-    }
+    let scoreCard = new ScoreCard()
 
     console.log(scoreCard)
     rowOfScores.forEach( (element) => {
@@ -134,8 +109,8 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
                     event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
             }
             sumScores(scoreCard);  
+            displayGir();
             displayTotalScores();  
-            // console.log(scoreCard)
         });    
     }
 
@@ -157,10 +132,8 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
             rowOfGirs[i].style.background = '';
             rowOfGirs[i].value = ''; 
         }
-
-        sumScores();
+        scoreCard = new ScoreCard()
         displayTotalScores();  
-
     });
    
     /**
@@ -179,9 +152,6 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * @param {*} hole_data 
      */
     function addStroke(hole_data, targetEvent, strokeDataElement){
-        // console.log('------- ', targetEvent)
-        // console.log('--hole_data?  ', hole_data)
-
         if (hole_data == "") {
             scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement] = 0;
         } else {
@@ -212,6 +182,23 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         if (strokes - par == 1) return LIGHT_RED; 
         if (strokes - par == 2) return ORANGE; 
         return DARK_RED; 
+    }
+
+    function displayGir(){
+        scoreCard.stroke_data.forEach ((score, i) => {
+            if (i < 9) { 
+                i = '0' + (i + 1) 
+            } else i = i + 1;
+            if (score.gir) {
+                let girBox = document.getElementById("gir-" + i)
+                document.getElementById("gir-" + i).defaultValue = 'X';
+                console.log(document.getElementById("gir-" + i));
+    
+            } else  {
+                document.getElementById("gir-" + i).defaultValue = '';
+                console.log(document.getElementById("gir-" + i));
+            }
+        });
     }
 
     function displayTotalScores(){

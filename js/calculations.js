@@ -41,12 +41,29 @@ export function sumScores(scoreCard){
         calculateSgsHcp(score); // calculate here? or when card is fully tallied?
         score.gir = determineGir(score)
         if (score.gir) {
+            let girBox = document.getElementById("gir-" + i)
             totGirs += 1
-            document.getElementById("gir-" + i).defaultValue = 'X';
-        } else document.getElementById("gir-" + i).defaultValue = '';
+            // document.getElementById("gir-" + i).defaultValue = 'X';
+            // console.log(document.getElementById("gir-" + i));
+
+        } else  {
+            // document.getElementById("gir-" + i).defaultValue = '';
+            // console.log(document.getElementById("gir-" + i));
+        }
 
     })
-    updateScoreCardObject();
+    // updateScoreCardObject();
+
+    scoreCard.total_strokes_played = totUserStrokes;
+    scoreCard.total_putts = totUserPutts;
+    scoreCard.greens_in_reg = totGirs;
+    scoreCard.short_game_hcp = sgsHcp;
+
+    // console.log("totUserStrokes --> ", totUserStrokes);
+    // console.log("scoreCard.total_strokes_played --> ", scoreCard.total_strokes_played);
+
+
+
 
     function determineGir(score){
         if (score[SCORE_CARD_STROKE_PER_HOLE] == 0) return false; // edge case for the sumScore() loop
