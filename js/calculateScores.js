@@ -31,7 +31,9 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let rowOfPutts = document.querySelectorAll("input[id^='putt-']"); // a regex like selector, returns an array
     let rowOfSgs = document.querySelectorAll("input[id^='sgs-']"); // a regex like selector, returns an array
     let rowOfGirs = document.querySelectorAll("input[id^='gir-']"); // a regex like selector, returns an array
-    
+    // let rowOfGirs = document.querySelectorAll("#gir-"); // a regex like selector, returns an array
+    console.log("rowOfGirs --> ", rowOfGirs);
+
     let scoreToCapture;
     let boxWithInput;
     let indexOfBoxWithScore;
@@ -39,6 +41,7 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let parPuttsPerCourse = nbrOfCourseHoles * PAR_PUTTS_PER_HOLE;
     let parSgsPerCourse = nbrOfCourseHoles * PAR_SGS_PER_HOLE;
     
+    let isFontColorWhite = false;
     let scoreCard = new ScoreCard()
 
     console.log(scoreCard)
@@ -64,9 +67,14 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * capture the index of the box to modify the scoreCard.stroke_data array
      * @param {*} element 
      */
+    // THE BACKGROUND OF THE BOX is LARGER THAN THE INPUT AREA -- WE NEED BOX AND INPUT AREA COLORIZED
     function makeActive(element){
         element.addEventListener('focusin', (event) => {
-            event.target.style.background = LIGHT_BLUE;
+            // let target = event.target
+            // let parent = target.parentElement 
+            // console.log("parentElement ==> ", parent);
+            event.target.style.background = PEWTER_BLUE;
+            // parent.style.background = PEWTER_BLUE;
             boxWithInput = document.activeElement;
             let lastTwoChars = (boxWithInput.getAttribute("id").length) - 2;
             indexOfBoxWithScore = ((boxWithInput.getAttribute("id")).substring(lastTwoChars)) - 1; // I have the INDEX of the value
@@ -81,6 +89,9 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     */
     function makeInactive(element, strokeDataElement){
         element.addEventListener('focusout', (event) => {
+            // let target = event.target
+            // let parent = target.parentElement
+
             scoreToCapture = boxWithInput.value;
             if (!isStrokeRecorded(scoreToCapture, strokeDataElement)) {
                 addStroke(scoreToCapture, event.target, strokeDataElement);
@@ -159,9 +170,21 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
 
     function colorizeStrokeToParRelation(userStrokes, par){
         if (userStrokes == 0) { return ''; }
-        if (userStrokes < par) { return LIGHT_GREEN; }
+        if (userStrokes < par) { return lowerThanPar(userStrokes, par); }
         if (userStrokes == par) { return ''; }
         if (userStrokes > par) { return bogey(userStrokes, par); }
+    }
+
+    /**
+     * Shade the under par strokes
+     * @param {*} strokes 
+     * @param {*} par 
+     * @returns 
+     */
+    function lowerThanPar(strokes, par){
+        if (par - strokes == 1) { return BIRDIE_COLOR; }
+        return EAGLE_AND_BETTER_COLOR; 
+
     }
 
     /**
@@ -172,9 +195,9 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
      * @returns an rgb color
      */
     function bogey(strokes, par){
-        if (strokes - par == 1) return LIGHT_RED; 
-        if (strokes - par == 2) return ORANGE; 
-        return DARK_RED; 
+        if (strokes - par == 1) { return BOGEY_COLOR; }
+        if (strokes - par == 2) { return DOUBLE_BOGEY_COLOR; }
+        return TRIPLE_BOGEY_AND_WORSE; 
     }
 
     function displayGir(){

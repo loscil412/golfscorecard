@@ -2,11 +2,13 @@ const ADD_COLUMNS = 2; // display-legends on left, totals on right
 const NUMERIC_REGEX = /^[\d]+$/;
 const PAR_PUTTS_PER_HOLE = 2
 const PAR_SGS_PER_HOLE = 1
-const LIGHT_RED = `rgb(255, 153, 153)`
-const DARK_RED = `rgb(255, 51, 51)`
-const ORANGE = `rgb(255, 153, 51)`
-const LIGHT_GREEN = 'lightgreen'
-const LIGHT_BLUE = 'rgb(128, 191, 255)'
+const BOGEY_COLOR = `rgb(255, 136, 17)` // bogey
+const DOUBLE_BOGEY_COLOR =  `rgb(244, 86, 42)`// double bogey
+const TRIPLE_BOGEY_AND_WORSE = `rgb(238, 27, 38)` // triple_bogey+
+const EAGLE_AND_BETTER_COLOR = 'rgb(59, 152, 38)' // slimy green
+const BIRDIE_COLOR = 'rgb(134, 191, 49)' // birdie
+const PEWTER_BLUE = 'rgb(119, 156, 171)' // pewter_blue
+const GHOST_WHITE = 'rgb(247, 247, 255)' // ghost_white
 const SCORE_CARD_STROKE_PER_HOLE = 'strokes'
 const SCORE_CARD_PUTTS_PER_HOLE = 'putts'
 const SCORE_CARD_SGS_STROKES_PER_HOLE = 'sgs_strokes'
@@ -16,7 +18,7 @@ const SCORE_CARD_TOTAL_USER_PUTTS = 'total_putts'
 const SCORE_CARD_SHORT_GAME_HCP = 'short_game_hcp'
 const SCORE_CARD_TOTAL_GREENS_IN_REG = 'greens_in_reg'
 
-
+let isFontColorWhite = false; // boolean flag for fonts on dark backgrounds
 
 
 

@@ -40,7 +40,22 @@ function drawScoreCard(){
     addRowToScoreCardTable("nbrOfPutts", "Putts", "putt")
     addRowToScoreCardTable("shortGame", "SGS", "sgs")
     addRowToScoreCardTable("gir", "GIR", "gir")
-   
+    // addGirTracker();
+
+    // GIR DOES NOT NEED USER ENTERED DATA -- NO INPUT BOXES
+    function addGirTracker(){
+        let idPrepend_Nbr = '';
+        scorecardTable += `<tr id="gir"><td id="display-legend">GIR</td>`;
+        for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+            if (i < 9) { 
+                idPrepend_Nbr = '0' + (i + 1);
+            } else idPrepend_Nbr = i + 1;
+    
+            scorecardTable += `<td id="gir-${idPrepend_Nbr}>""</td>`; // gir will be either not hit ''or hit X
+        }
+        scorecardTable += `<td id="totgir"</td></tr>`;
+    
+    }
 /*
  * additional rows of data go here
  * GIR calculator
@@ -68,7 +83,7 @@ function addRowToScoreCardTable(idName, display_legend, idPrepend){
         if (i < 9) { 
             idPrepend_Nbr = '0' + (i + 1);
         } else idPrepend_Nbr = i + 1;
-        scorecardTable += `<td><input class="input-box" type="text" id="${idPrepend}-${idPrepend_Nbr}" size="1"></td>`
+        scorecardTable += `<td id="${idName}-${idPrepend_Nbr}"><input class="input-box" type="text" id="${idPrepend}-${idPrepend_Nbr}" size="1"></td>`
     }
     scorecardTable += `<td id="tot${idName}"></td></tr>`
 }
