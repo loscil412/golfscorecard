@@ -12,12 +12,6 @@
     
 }
 
-.input-box {
-    text-align: center;
-    background-color: var(--ghost_white);
-    border-width: 0;
-}
-
 table, td, th {
     border: 1px solid var(--indigo_dye);
     border-radius: 8px;
@@ -31,6 +25,19 @@ thead, tfoot {
 
 }
 
+.input-box {
+    text-align: center;
+    background-color: var(--ghost_white);
+    border-width: 0;
+}
+
+.button {
+    background-color: var(--maximum_yellow);
+    border-color: var(--indigo_dye);
+    width: fit-content;
+    border-radius: 8px;
+    margin: 10px;
+}
 
 #scrCrdHlNbr {
     width: 4%;
@@ -44,10 +51,3 @@ thead, tfoot {
     text-align: center;
 }
 
-.button {
-    background-color: var(--maximum_yellow);
-    border-color: var(--indigo_dye);
-    width: fit-content;
-    border-radius: 8px;
-    margin: 10px;
-}
