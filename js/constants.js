@@ -25,6 +25,15 @@ let scoreCard; // the scoreCard object from ScoreCard() class
 let _selectedCourse; 
 let nbrOfCourseHoles;
 let scorecardTable;
-let nbrOfColumns;
+let _nbrOfColumns;
 let totalCoursePar = 0;
 let indexOfBoxWithScore;
+let _currentDateString = getCurrentDateString()
+
+function getCurrentDateString(){
+    let tsDate = new Date(Date.now());
+    console.log('tsDate.toISOString -->', tsDate.toISOString().slice(0, 10))
+    let currentDate = tsDate.toISOString().slice(0, 10)
+    console.log('currentDate --> ', currentDate)
+    return currentDate
+}

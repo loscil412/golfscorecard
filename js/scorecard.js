@@ -10,27 +10,18 @@ function setCourse(){
     document.getElementById("courseSelection").innerHTML = _selectedCourse.name
     document.getElementById("dynamicCourseName").innerText = ": " + _selectedCourse.name
     totalCoursePar = 0
-    scoreCard = new ScoreCard();
+    scoreCard = new ScoreCard(_currentDateString);
     drawScoreCard();
+    captureUserDate();
     captureAndCalculateStrokes();
 }
 
-function getCurrentDate(){
-    // let msecDate = Date.now();
-    let tsDate = new Date(Date.now());
-    console.log('tsDate.toISOString -->', tsDate.toISOString().slice(0, 10))
-    let currentDate = tsDate.toISOString().slice(0, 10)
-    console.log('currentDate --> ', currentDate)
-    return currentDate
-}
-
-
 function drawScoreCard(){
-    scorecardTable = `<input id="date-box" type="date" value=${getCurrentDate()}>`    
+    scorecardTable = `<input id="date-box" type="date" value=${_currentDateString} max=${_currentDateString}>`  
     nbrOfCourseHoles = Object.keys(_selectedCourse.holes).length;
-    nbrOfColumns = nbrOfCourseHoles + ADD_COLUMNS;
+    _nbrOfColumns = nbrOfCourseHoles + ADD_COLUMNS;
     // the courseName header
-    scorecardTable += `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${_selectedCourse.name}</th></tr></thead>`;
+    scorecardTable += `<table><thead id="courseName"><tr><th colspan=${_nbrOfColumns}>${_selectedCourse.name}</th></tr></thead>`;
     
     // the hole numbers
     scorecardTable += `<tbody><tr id="holeNumbers"><td id="display-legend">Hole</td>`;
@@ -42,7 +33,7 @@ function drawScoreCard(){
     // the par score per hole
     // let totalCoursePar = 0;
     scorecardTable += `<tr id="coursePar"><td id="display-legend">Par</td>`;
-    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+    for (let i = 0; i < _nbrOfColumns - ADD_COLUMNS; i++){
         scorecardTable += `<td>${_selectedCourse.holes[i+1]}</td>`; // hole par
         totalCoursePar += _selectedCourse.holes[i+1];
     }
@@ -59,7 +50,7 @@ function drawScoreCard(){
     function addGirTracker(){
         let idPrepend_Nbr = '';
         scorecardTable += `<tr id="gir"><td id="display-legend">GIR</td>`;
-        for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+        for (let i = 0; i < _nbrOfColumns - ADD_COLUMNS; i++){
             if (i < 9) { 
                 idPrepend_Nbr = '0' + (i + 1);
             } else idPrepend_Nbr = i + 1;
@@ -72,16 +63,18 @@ function drawScoreCard(){
 
     scorecardTable += "</tbody></table>";
     
+    document.getElementById("table").innerHTML = scorecardTable; 
+
     // now the DOM is aware of the scorecard and we are ready to capture user input
-    document.getElementById("table").innerHTML = scorecardTable;
+    drawResetButton();
+}
+
+function captureUserDate(){
     document.getElementById("date-box").addEventListener("change", function() {
         scoreCard.date = this.value
         console.log('scorecard.date ==> ', scoreCard.date); // yyyy-MM-dd
     })
-
-    drawResetButton();
 }
-
 
 /**
  * 
@@ -92,7 +85,7 @@ function drawScoreCard(){
 function addRowToScoreCardTable(idName, display_legend, idPrepend){
     let idPrepend_Nbr = '';
     scorecardTable += `<tr id="${idName}"><td id="display-legend">${display_legend}</td>`
-    for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
+    for (let i = 0; i < _nbrOfColumns - ADD_COLUMNS; i++){
         if (i < 9) { 
             idPrepend_Nbr = '0' + (i + 1);
         } else idPrepend_Nbr = i + 1;

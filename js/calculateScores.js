@@ -136,10 +136,14 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
             rowOfGirs[i].style.background = '';
             rowOfGirs[i].value = ''; 
         }
-        scoreCard = new ScoreCard()
+        scoreCard = new ScoreCard(getTheCurrentValueInsideDateBox())
         displayTotalScores();  
     });
    
+    function getTheCurrentValueInsideDateBox(){
+        return document.getElementById("date-box").value
+    }
+
     /**
      * Is the received hole_data different from the already stored hole_data?
      * @param {*} existingScore 

@@ -1,10 +1,11 @@
 /**
  * Construct the score card object as a class
+ * User date defaults to 1999 if the date objects fail from calling functions
  */
 
 class ScoreCard {
 
-    constructor(){
+    constructor(_date="1999-09-15"){
         this.course = _selectedCourse.name
         this.create_time = Date.now()
         this.course_par = _selectedCourse.coursePar
@@ -13,7 +14,7 @@ class ScoreCard {
         this.total_putts = 0
         this.short_game_hcp = 0
         this.stroke_data = this.initializeStrokeData()
-        this.date = "1999-01-01"
+        this.date = _date
     }
 
     initializeStrokeData(){
@@ -31,5 +32,4 @@ class ScoreCard {
         }   
         return array 
     }
-
 }
