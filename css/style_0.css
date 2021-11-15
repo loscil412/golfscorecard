@@ -10,6 +10,8 @@
     --pewter_blue: rgb(119, 156, 171);
     color: var(--gunmetal);
     background: var(--ghost_white);
+    font-family: 'PT Sans', sans-serif;
+    /* font-size: .7em; */
     
 }
 
@@ -34,10 +36,16 @@ thead, tfoot {
     text-align: center;
     background-color: var(--ghost_white);
     border-width: 0;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1em;
+
 }
 
 .date-box {
     background: var(--ghost_white);
+    font-family: 'PT Sans', sans-serif;
+    font-size: .7em;
+
 }
 
 .button {

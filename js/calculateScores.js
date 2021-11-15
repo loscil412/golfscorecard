@@ -72,7 +72,7 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
         element.addEventListener('focusin', (event) => {
             let target = event.target
             let parent = target.parentElement 
-            console.log("parentElement ==> ", parent);
+            // console.log("parentElement ==> ", parent);
             event.target.style.background = PEWTER_BLUE;
             parent.style.background = PEWTER_BLUE;
             boxWithInput = document.activeElement;

@@ -31,6 +31,8 @@ export function sumScores(scoreCard){
     }
 
     function calculateSgsHcp(score){
+        document.getElementById("totshortGame").style.fontSize = '1em';
+
         if (score[SCORE_CARD_SGS_STROKES_PER_HOLE] != 0) {
             nbrOfHolesForSgsHcp += 1
             totalSgsStrokes_putts_plus_wedge += (score[SCORE_CARD_SGS_STROKES_PER_HOLE] + score[SCORE_CARD_PUTTS_PER_HOLE]) // this is dependent on Putts being entered first?
@@ -38,8 +40,10 @@ export function sumScores(scoreCard){
         if (nbrOfHolesForSgsHcp != 0) {
             // sgsHcp = (totalSgsStrokes_putts_plus_wedge / nbrOfHolesForSgsHcp).toFixed(2); // decimal
             sgsHcp = getGcd(totalSgsStrokes_putts_plus_wedge, nbrOfHolesForSgsHcp); // fraction
-        } else sgsHcp = "Not Calculated"
-
+        } else {
+            document.getElementById("totshortGame").style.fontSize = '.75em';
+            sgsHcp = "Not Calculated"
+        }
     }
 
 }
