@@ -16,17 +16,17 @@ function setCourse(){
 }
 
 function getCurrentDate(){
-    let msecDate = Date.now();
-    let tsDate = new Date(msecDate);
+    // let msecDate = Date.now();
+    let tsDate = new Date(Date.now());
     console.log('tsDate.toISOString -->', tsDate.toISOString().slice(0, 10))
     let currentDate = tsDate.toISOString().slice(0, 10)
     console.log('currentDate --> ', currentDate)
     return currentDate
 }
 
-function drawScoreCard(){
-    scorecardTable = `<input class="date" type="date" value=${getCurrentDate()}>`
 
+function drawScoreCard(){
+    scorecardTable = `<input id="date-box" type="date" value=${getCurrentDate()}>`    
     nbrOfCourseHoles = Object.keys(_selectedCourse.holes).length;
     nbrOfColumns = nbrOfCourseHoles + ADD_COLUMNS;
     // the courseName header
@@ -69,20 +69,19 @@ function drawScoreCard(){
         scorecardTable += `<td id="totgir"</td></tr>`;
     
     }
-/*
- * additional rows of data go here
- * GIR calculator
- * FIR
- * short game HCP
- */
+
     scorecardTable += "</tbody></table>";
     
     // now the DOM is aware of the scorecard and we are ready to capture user input
     document.getElementById("table").innerHTML = scorecardTable;
+    document.getElementById("date-box").addEventListener("change", function() {
+        scoreCard.date = this.value
+        console.log('scorecard.date ==> ', scoreCard.date); // yyyy-MM-dd
+    })
+
     drawResetButton();
-    console.log('window? --> ', window)
-    console.log('readystate? --> ', document.readyState)
 }
+
 
 /**
  * 

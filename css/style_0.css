@@ -12,6 +12,10 @@
     
 }
 
+table {
+    width: 80%;
+}
+
 table, td, th {
     border: 1px solid var(--indigo_dye);
     border-radius: 8px;
@@ -31,7 +35,7 @@ thead, tfoot {
     border-width: 0;
 }
 
-.date {
+.date-box {
     background: var(--ghost_white);
 }
 
