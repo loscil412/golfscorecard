@@ -70,11 +70,11 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     // THE BACKGROUND OF THE BOX is LARGER THAN THE INPUT AREA -- WE NEED BOX AND INPUT AREA COLORIZED
     function makeActive(element){
         element.addEventListener('focusin', (event) => {
-            // let target = event.target
-            // let parent = target.parentElement 
-            // console.log("parentElement ==> ", parent);
+            let target = event.target
+            let parent = target.parentElement 
+            console.log("parentElement ==> ", parent);
             event.target.style.background = PEWTER_BLUE;
-            // parent.style.background = PEWTER_BLUE;
+            parent.style.background = PEWTER_BLUE;
             boxWithInput = document.activeElement;
             let lastTwoChars = (boxWithInput.getAttribute("id").length) - 2;
             indexOfBoxWithScore = ((boxWithInput.getAttribute("id")).substring(lastTwoChars)) - 1; // I have the INDEX of the value
@@ -88,34 +88,43 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     * @param {String} strokeDataElement attribute for scoreCard.stroke_data array
     */
     function makeInactive(element, strokeDataElement){
+        let target, parent, colorizedStroke;
         element.addEventListener('focusout', (event) => {
-            // let target = event.target
-            // let parent = target.parentElement
-
+            target = event.target
+            parent = target.parentElement
             scoreToCapture = boxWithInput.value;
             if (!isStrokeRecorded(scoreToCapture, strokeDataElement)) {
-                addStroke(scoreToCapture, event.target, strokeDataElement);
+                addStroke(scoreToCapture, target, strokeDataElement);
             }
             switch (strokeDataElement){
                 case SCORE_CARD_STROKE_PER_HOLE:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
+                    colorizedStroke = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
+                    colorizeThisStrokeData(colorizedStroke);
                     break;
 
                 case SCORE_CARD_PUTTS_PER_HOLE:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], PAR_PUTTS_PER_HOLE);
+                    colorizedStroke = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], PAR_PUTTS_PER_HOLE);
+                    colorizeThisStrokeData(colorizedStroke);
                     break;
                 
                 case SCORE_CARD_SGS_STROKES_PER_HOLE:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], PAR_SGS_PER_HOLE);
+                    colorizedStroke = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], PAR_SGS_PER_HOLE);
+                    colorizeThisStrokeData(colorizedStroke);
                     break;
                 
                 default:
-                    event.target.style.background = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
+                    colorizedStroke = colorizeStrokeToParRelation(scoreCard.stroke_data[indexOfBoxWithScore][strokeDataElement], scoreCard.stroke_data[indexOfBoxWithScore][SCORE_CARD_HOLE_PAR]);
+                    colorizeThisStrokeData(colorizedStroke);
             }
             sumScores(scoreCard);  
             displayGir();
             displayTotalScores();  
-        });    
+        });  
+
+        function colorizeThisStrokeData(colorizedStroke){
+            target.style.background = colorizedStroke;
+            parent.style.background = colorizedStroke;
+        }  
     }
 
     /**
@@ -128,12 +137,16 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
                 scoreCard.stroke_data[i][dataAttributes[j]] = '';
             }
             rowOfScores[i].style.background = ''; 
+            rowOfScores[i].parentElement.style.background = '';
             rowOfScores[i].value = '';    
             rowOfPutts[i].style.background = '';
+            rowOfPutts[i].parentElement.style.background = '';
             rowOfPutts[i].value = '';    
             rowOfSgs[i].style.background = '';
+            rowOfSgs[i].parentElement.style.background = '';
             rowOfSgs[i].value = '';   
             rowOfGirs[i].style.background = '';
+            rowOfGirs[i].parentElement.style.background = '';
             rowOfGirs[i].value = ''; 
         }
         scoreCard = new ScoreCard(getTheCurrentValueInsideDateBox())
