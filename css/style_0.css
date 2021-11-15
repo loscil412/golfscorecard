@@ -31,6 +31,10 @@ thead, tfoot {
     border-width: 0;
 }
 
+.date {
+    background: var(--ghost_white);
+}
+
 .button {
     background-color: var(--maximum_yellow);
     border-color: var(--indigo_dye);

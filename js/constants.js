@@ -21,11 +21,10 @@ const SCORE_CARD_TOTAL_GREENS_IN_REG = 'greens_in_reg'
 let isFontColorWhite = false; // boolean flag for fonts on dark backgrounds
 
 
-
-let SELECTED_COURSE; 
+let scoreCard; // the scoreCard object from ScoreCard() class
+let _selectedCourse; 
 let nbrOfCourseHoles;
 let scorecardTable;
 let nbrOfColumns;
 let totalCoursePar = 0;
 let indexOfBoxWithScore;
-let scoreCard;

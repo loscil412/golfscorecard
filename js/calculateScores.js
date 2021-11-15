@@ -37,12 +37,12 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let scoreToCapture;
     let boxWithInput;
     let indexOfBoxWithScore;
-    let lengthOfScoreCardStrokeDataArray = Object.keys(SELECTED_COURSE.holes).length;
+    let lengthOfScoreCardStrokeDataArray = Object.keys(_selectedCourse.holes).length;
     let parPuttsPerCourse = nbrOfCourseHoles * PAR_PUTTS_PER_HOLE;
     let parSgsPerCourse = nbrOfCourseHoles * PAR_SGS_PER_HOLE;
     
     let isFontColorWhite = false;
-    let scoreCard = new ScoreCard()
+    // let scoreCard = new ScoreCard()
 
     console.log(scoreCard)
     rowOfScores.forEach( (element) => {

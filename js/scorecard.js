@@ -6,18 +6,31 @@ addCoursesToMenu();
 menu.addEventListener("change", setCourse)
 
 function setCourse(){
-    SELECTED_COURSE = COURSE_LIST[(document.querySelector('select').value)]
-    document.getElementById("courseSelection").innerHTML = SELECTED_COURSE.name
-    document.getElementById("dynamicCourseName").innerText = ": " + SELECTED_COURSE.name
+    _selectedCourse = COURSE_LIST[(document.querySelector('select').value)]
+    document.getElementById("courseSelection").innerHTML = _selectedCourse.name
+    document.getElementById("dynamicCourseName").innerText = ": " + _selectedCourse.name
     totalCoursePar = 0
+    scoreCard = new ScoreCard();
     drawScoreCard();
+    captureAndCalculateStrokes();
+}
+
+function getCurrentDate(){
+    let msecDate = Date.now();
+    let tsDate = new Date(msecDate);
+    console.log('tsDate.toISOString -->', tsDate.toISOString().slice(0, 10))
+    let currentDate = tsDate.toISOString().slice(0, 10)
+    console.log('currentDate --> ', currentDate)
+    return currentDate
 }
 
 function drawScoreCard(){
-    nbrOfCourseHoles = Object.keys(SELECTED_COURSE.holes).length;
+    scorecardTable = `<input class="date" type="date" value=${getCurrentDate()}>`
+
+    nbrOfCourseHoles = Object.keys(_selectedCourse.holes).length;
     nbrOfColumns = nbrOfCourseHoles + ADD_COLUMNS;
     // the courseName header
-    scorecardTable = `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${SELECTED_COURSE.name}</th></tr></thead>`;
+    scorecardTable += `<table><thead id="courseName"><tr><th colspan=${nbrOfColumns}>${_selectedCourse.name}</th></tr></thead>`;
     
     // the hole numbers
     scorecardTable += `<tbody><tr id="holeNumbers"><td id="display-legend">Hole</td>`;
@@ -30,8 +43,8 @@ function drawScoreCard(){
     // let totalCoursePar = 0;
     scorecardTable += `<tr id="coursePar"><td id="display-legend">Par</td>`;
     for (let i = 0; i < nbrOfColumns - ADD_COLUMNS; i++){
-        scorecardTable += `<td>${SELECTED_COURSE.holes[i+1]}</td>`; // hole par
-        totalCoursePar += SELECTED_COURSE.holes[i+1];
+        scorecardTable += `<td>${_selectedCourse.holes[i+1]}</td>`; // hole par
+        totalCoursePar += _selectedCourse.holes[i+1];
     }
     scorecardTable += `<td id="display-legend">${totalCoursePar}</td></tr>`;
 
@@ -67,7 +80,8 @@ function drawScoreCard(){
     // now the DOM is aware of the scorecard and we are ready to capture user input
     document.getElementById("table").innerHTML = scorecardTable;
     drawResetButton();
-    captureAndCalculateStrokes();
+    console.log('window? --> ', window)
+    console.log('readystate? --> ', document.readyState)
 }
 
 /**

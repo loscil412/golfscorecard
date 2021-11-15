@@ -22,33 +22,19 @@
             <h2>Select a course from the drop down menu:</h2>
             <select id="menu">
                 <!-- dynamically built within scorecard.js -->
-            </select>
-            <div class="date">
-                <input type="date" value=currentDate>
-            </div>
-        
+            </select>        
         </div>
 
-
-        
         <h3 id="courseSelection"></h3>
 
         <div id="table"></div>
         <div id="inputRow"></div>
+
+        <!-- SCRIPTING -->
         <script src="js/constants.js"></script>
         <script src="js/scoreCard_class.js"></script>
         <script type="module" src="js/calculations.js"></script>
         <script type="module" src="js/calculateScores.js"></script>
-
         <script type="module" src="js/scorecard.js"></script>
-
-        <script>
-            let msecDate = Date.now();
-            let currentDate = new Date(msecDate);
-
-            console.log('currentDate --> ', currentDate)
-        </script>
-
-
     </body>
 </html>

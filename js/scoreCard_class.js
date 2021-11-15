@@ -5,9 +5,9 @@
 class ScoreCard {
 
     constructor(){
-        this.course = SELECTED_COURSE.name
+        this.course = _selectedCourse.name
         this.create_time = Date.now()
-        this.course_par = SELECTED_COURSE.coursePar
+        this.course_par = _selectedCourse.coursePar
         this.greens_in_reg = 0
         this.total_strokes_played = 0
         this.total_putts = 0
@@ -17,10 +17,10 @@ class ScoreCard {
 
     initializeStrokeData(){
         let array = []
-        for (let i = 0 ; i < Object.keys(SELECTED_COURSE.holes).length; i++){
+        for (let i = 0 ; i < Object.keys(_selectedCourse.holes).length; i++){
             array.push(
                 {
-                    par: SELECTED_COURSE.holes[i+1],
+                    par: _selectedCourse.holes[i+1],
                     strokes: 0,
                     putts: 0,
                     sgs_strokes: 0,
