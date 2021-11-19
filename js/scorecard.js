@@ -55,9 +55,9 @@ function drawScoreCard(){
                 idPrepend_Nbr = '0' + (i + 1);
             } else idPrepend_Nbr = i + 1;
     
-            scorecardTable += `<td id="gir-${idPrepend_Nbr}>""</td>`; // gir will be either not hit ''or hit X
+            scorecardTable += `<td id="gir-${idPrepend_Nbr}"></td>`; // gir will be either not hit ''or hit X
         }
-        scorecardTable += `<td id="totgir"</td></tr>`;
+        scorecardTable += `<td id="totgir"></td></tr>`;
     
     }
 

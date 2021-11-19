@@ -31,7 +31,7 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let rowOfPutts = document.querySelectorAll("input[id^='putt-']"); // a regex like selector, returns an array
     let rowOfSgs = document.querySelectorAll("input[id^='sgs-']"); // a regex like selector, returns an array
     // let rowOfGirs = document.querySelectorAll("input[id^='gir-']"); // a regex like selector, returns an array
-    let rowOfGirs = document.querySelectorAll("gir-"); // a regex like selector, returns an array
+    let rowOfGirs = document.querySelectorAll("[id^='gir-']"); // a regex like selector, returns an array
     console.log("rowOfGirs --> ", rowOfGirs);
 
     let scoreToCapture;
@@ -219,15 +219,19 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
 
     function displayGir(){
         scoreCard.stroke_data.forEach ((score, i) => {
-            if (i < 9) { 
-                i = '0' + (i + 1) 
-            } else i = i + 1;
+            let indexDigits = ''
+            // if (i < 9) { 
+            //     indexDigits = '0' + (i + 1) 
+            // } else indexDigits = i + 1;
+            
+            // let girBox = document.querySelector("gir-" + i)
+            let girBox = rowOfGirs[i]
+            console.log(girBox)
             if (score.gir) {
-                let girBox = document.getElementById("gir-" + i)
-                document.getElementById("gir-" + i).defaultValue = 'X';
+                girBox.innerText = 'X';
     
             } else  {
-                document.getElementById("gir-" + i).defaultValue = '';
+                girBox.innerText = '';
             }
         });
     }
