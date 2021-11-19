@@ -30,8 +30,8 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     let rowOfScores = document.querySelectorAll("input[id^='score-']"); // a regex like selector, returns an array
     let rowOfPutts = document.querySelectorAll("input[id^='putt-']"); // a regex like selector, returns an array
     let rowOfSgs = document.querySelectorAll("input[id^='sgs-']"); // a regex like selector, returns an array
-    let rowOfGirs = document.querySelectorAll("input[id^='gir-']"); // a regex like selector, returns an array
-    // let rowOfGirs = document.querySelectorAll("#gir-"); // a regex like selector, returns an array
+    // let rowOfGirs = document.querySelectorAll("input[id^='gir-']"); // a regex like selector, returns an array
+    let rowOfGirs = document.querySelectorAll("gir-"); // a regex like selector, returns an array
     console.log("rowOfGirs --> ", rowOfGirs);
 
     let scoreToCapture;

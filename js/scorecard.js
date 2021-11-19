@@ -43,8 +43,8 @@ function drawScoreCard(){
     addRowToScoreCardTable("UserScore", "Strokes", "score")
     addRowToScoreCardTable("nbrOfPutts", "Putts", "putt")
     addRowToScoreCardTable("shortGame", "SGS", "sgs")
-    addRowToScoreCardTable("gir", "GIR", "gir")
-    // addGirTracker();
+    // addRowToScoreCardTable("gir", "GIR", "gir")
+    addGirTracker();
 
     // GIR DOES NOT NEED USER ENTERED DATA -- NO INPUT BOXES
     function addGirTracker(){
