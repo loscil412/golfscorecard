@@ -17,7 +17,8 @@ function setCourse(){
 }
 
 function drawScoreCard(){
-    scorecardTable = `<input id="date-box" type="date" value=${_currentDateString} max=${_currentDateString}>`  
+    scorecardTable = `<input id="date-box" type="date" value=${_currentDateString} max=${_currentDateString}>
+                        <label for="date-box">Date of Play</label>`  
     nbrOfCourseHoles = Object.keys(_selectedCourse.holes).length;
     _nbrOfColumns = nbrOfCourseHoles + ADD_COLUMNS;
     // the courseName header

@@ -201,7 +201,6 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
     function lowerThanPar(strokes, par){
         if (par - strokes == 1) { return BIRDIE_COLOR; }
         return EAGLE_AND_BETTER_COLOR; 
-
     }
 
     /**
@@ -219,31 +218,26 @@ export function captureAndCalculateStrokes(TOTAL_COURSE_PAR=99) {
 
     function displayGir(){
         scoreCard.stroke_data.forEach ((score, i) => {
-            let indexDigits = ''
-            // if (i < 9) { 
-            //     indexDigits = '0' + (i + 1) 
-            // } else indexDigits = i + 1;
-            
-            // let girBox = document.querySelector("gir-" + i)
             let girBox = rowOfGirs[i]
             console.log(girBox)
             if (score.gir) {
                 girBox.innerText = 'X';
-    
+                girBox.style = `background-color:${BIRDIE_COLOR}`
             } else  {
                 girBox.innerText = '';
+                girBox.style = `background-color:${GHOST_WHITE}`
             }
         });
     }
 
     function displayTotalScores(){
-        document.getElementById("totUserScore").innerText = scoreCard[SCORE_CARD_TOTAL_USER_STROKES];
-        document.getElementById("totUserScore").style.background = colorizeStrokeToParRelation(scoreCard[SCORE_CARD_TOTAL_USER_STROKES], totalCoursePar);
-        document.getElementById("totnbrOfPutts").innerText = scoreCard[SCORE_CARD_TOTAL_USER_PUTTS];
-        document.getElementById("totnbrOfPutts").style.background = colorizeStrokeToParRelation(scoreCard[SCORE_CARD_TOTAL_USER_PUTTS], parPuttsPerCourse);    
-        document.getElementById("totshortGame").innerText = scoreCard[SCORE_CARD_SHORT_GAME_HCP];
+        document.querySelector("#totUserScore").innerText = scoreCard[SCORE_CARD_TOTAL_USER_STROKES];
+        document.querySelector("#totUserScore").style.background = colorizeStrokeToParRelation(scoreCard[SCORE_CARD_TOTAL_USER_STROKES], totalCoursePar);
+        document.querySelector("#totnbrOfPutts").innerText = scoreCard[SCORE_CARD_TOTAL_USER_PUTTS];
+        document.querySelector("#totnbrOfPutts").style.background = colorizeStrokeToParRelation(scoreCard[SCORE_CARD_TOTAL_USER_PUTTS], parPuttsPerCourse);    
+        document.querySelector("#totshortGame").innerText = scoreCard[SCORE_CARD_SHORT_GAME_HCP];
         // document.getElementById("totshortGame").style.background = colorizeStrokeToParRelation(totUserSgs, parSgsPerCourse);    
-        document.getElementById("totgir").innerText = scoreCard[SCORE_CARD_TOTAL_GREENS_IN_REG];
+        document.querySelector("#totgir").innerText = scoreCard[SCORE_CARD_TOTAL_GREENS_IN_REG];
         // document.getElementById("totgir").style.background = colorizeStrokeToParRelation(totGirs, nbrOfCourseHoles);    
     }
 }
